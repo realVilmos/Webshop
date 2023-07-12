@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Karakter készítése</title>
+</head>
+<body>
+    Karakter készítése
+    <form th:action="@{/process_create_dev}" th:object="${dev}" method="post">
+        <div>
+            <label class="">Név: </label>
+            <input type="text" th:field="*{name}"/>
+        </div>
+        <div>
+            <label class="">Nem: (pipa = férfi vagy nő egyenlőre tök mind1 pipáld be vagy ne azt cső)</label>
+            <input type="checkbox" th:field="*{sex}"/>
+        </div>
+        <button type="submit">Karakter kreálás</button>
+    </form>
+</body>
+</html>

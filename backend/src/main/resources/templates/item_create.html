@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/create_item}" th:object="${item}" method="post">
+    <div>
+        <label class="">Név: </label>
+        <input type="text" th:field="*{name}"/>
+    </div>
+    <div>
+        <label class="">Leírás: </label>
+        <input type="text" th:field="*{description}"/>
+    </div>
+    <div>
+        <label class="">Kép URL: </label>
+        <input type="text" th:field="*{URL}"/>
+    </div>
+    <div>
+        <label class="">isSkin: </label>
+        <input type="checkbox" th:field="*{skin}"/>
+    </div>
+    <div>
+        <label class="">laptopSkin: </label>
+        <input type="checkbox" th:field="*{laptopSkin}"/>
+    </div>
+    <div>
+        <label class="">Hunger: </label>
+        <input type="text" th:field="*{hungerPlus}"/>
+    </div>
+    <div>
+        <label class="">Energy: </label>
+        <input type="text" th:field="*{energyPlus}"/>
+    </div>
+    <div>
+        <label class="">Ár: </label>
+        <input type="text" th:field="*{price}"/>
+    </div>
+    <button type="submit">Item létrehozás</button>
+</form>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <script type="text/javascript"  src="../../static/js/scripts.js"></script>
+        <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" href="../src/logo.svg" type="image/gif" sizes="16x16">
+        <link rel="stylesheet" href="../style.css">
+        <noscript>Kapcsold be JavaScriptet a böngészőben az adagok hozzáadásához!</noscript>
+        <title>Regisztráció</title>
+    </head>
+    <body>
+        <div class="background" >
+            <header> 
+                <nav class="mobilMenu">
+                    
+<!--mobil menü-->
+                    
+                    <div> 
+<!--mobilmenu sor -->
+                
+                        <div class="ulMobil">
+                        
+                            <a alt="Vissza a főoldalra gomb" style="font-size:70px;cursor: pointer;color:white" href="../index.html">&#8962;</a>
+                            <a id="menulogo" style="font-size:30px;cursor:pointer;color:white;" href="index.php"></a>
+                        </div>
+                    </div>
+                </nav>
+<!-- asztali menu-->
+
+<nav class="desktopMenu">
+    <ul class="deskMenuList">
+        <li>
+            <a th:href="@{/}" href="../index.html"> <img class="logo" src="../src/logo.svg" alt="A honlap logója ami egy link a főoldalra." > </a>
+        </li>
+        <li>
+            <a th:href="@{/}" href="../index.html"> <p id="pageName" >My little developer</p></a>
+        </li>
+        <li>
+            <a class="menu" th:href="@{/login}">Bejelentkezés</a>
+        </li>
+        <li>
+            <a class="menu" th:href="@{/register}">Regisztráció</a>
+        </li>
+    </ul>
+</nav>
+            
+            </header>
+            <main>
+<!--regisztráció input mezői oninput="isFill()"? -->
+
+                <p id="regText">Regisztráció</p>
+                <div class="reg_main">
+                    <div class="itemtext">
+                        
+                    </div>
+                    <form th:action="@{/user/process_register}" th:object="${user}" method="post" onsubmit="return checkUniqueEmailAndUser(this);">
+                        <div class="item">
+							<input type="text" id="first_name" th:field="*{lastName}" class="reginput" size="40" autofocus  placeholder="Vezetéknév*">
+						</div>
+
+                        <div class="item">
+							<input type="text" id="last_name" th:field="*{firstName}" class="reginput" size="40" autofocus placeholder="Keresztnév*">
+						</div>
+
+						<div class="item">
+							<input type="text" id="username"  th:field="*{username}" class="reginput" size="40" autofocus placeholder="Felhasználónév*">
+						</div>
+                        
+
+						<div class="item">
+							<input type="email" id="email" th:field="*{email}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" class="reginput" size="40" autofocus placeholder="E-mail cím*">
+						</div>
+
+						<div class="item">
+							<input type="password" id="password1" th:field="*{password}" class="reginput" size="40" placeholder="Jelszó*">
+						</div>
+						
+						<div class="item">
+							<input type="password" id="password2" class="reginput" size="40" placeholder="Jelszó mégegyszer*">
+						</div>
+
+                        <label id="notMatchPassw" ></label><br>
+                        <label id="empty" ></label>
+
+                        
+                        <div >
+                            <input type="checkbox" id="felh_feltétel"  name="felh_feltétel" value="felh_feltétel">
+                            <label id="felh_feltétel_lb" class="whatev" >Elfogadom a felhasználási feltételeket.</label>
+                        </div>
+
+
+						<input id="submit" type="" value="Regisztrálok" readonly onclick="input_notEmpty()" >
+                        
+					</form>
+                </div>
+            </main>
+        </div>
+<!-- media query a responsivitáshoz -->
+        <style>
+            @media only screen and (max-width: 600px) {
+                .desktopMenu {
+                    display:none;
+
+                }
+            }
+            @media only screen and (min-width: 600px) {
+                .mobilMenu {
+                    display:none;
+
+                }
+            }
+            @media only screen and (max-width: 1000px) {
+                #pageName{
+                    margin:0;
+                    display:none;   
+                }
+                .deskMenuList{
+                    grid-template-columns: 33% 20% 23% 23%;
+                }
+            }    
+
+            @media only screen and (max-width: 300px) {
+                .reg_main{
+                    margin: auto;
+
+                }
+            }    
+                            
+        </style>
+        <script>
+            function checkUniqueEmailAndUser(form){
+                userEmail = $("#email").val()
+                userName = $("#username").val()
+
+                csrfValue = $("input[name=_csrf]").val()
+
+
+                parameters = {email: userEmail, username: userName, _csrf: csrfValue}
+
+                $.post("[[@{'/user/validate'}]]", parameters, function (response){
+                    if(response == "OK"){
+                        form.submit();
+                    }else if(response == "err_email"){
+                        alert("Az Email használt")
+                    }else if(response == "err_username"){
+                        alert("A felhasználónév használt")
+                    }else{
+                        alert("Ismeretlen hiba történt")
+                    }
+                }).fail(function (){
+                    alert("Error connecting")
+                })
+                return false;
+            }
+
+        </script>
+    </body>
+    <footer>
+        &#169; 2021 mylildev.hu
+    </footer>
+</html>
+
+

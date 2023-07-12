@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="32mm"
+   height="32mm"
+   viewBox="0 0 32 32"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="logo.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.49260384"
+     inkscape:cx="239.5434"
+     inkscape:cy="527.8075"
+     inkscape:window-width="1920"
+     inkscape:window-height="986"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer2"
+     height="209mm" />
+  <defs
+     id="defs2">
+    <rect
+       x="127.7548"
+       y="324.41107"
+       width="568.43707"
+       height="333.02374"
+       id="rect1974" />
+  </defs>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Réteg 2">
+    <path
+       d="m 30.86433,11.891665 -0.08541,2.351261 -9.90788,6.37554 0.05694,-3.02951 7.943388,-4.340793 -8.057273,-4.8833899 0.05694,-2.9842915"
+       style="fill:#ffffff;stroke:none;stroke-width:0.00661339px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="path4636" />
+    <path
+       style="fill:#ffffff;stroke:none;stroke-width:0.0249955px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 0.31202288,11.916239 0.0854131,2.351262 9.90788002,6.375538 -0.05694,-3.029508 L 2.3049888,13.272737 10.36226,8.3893474 10.30532,5.4050546"
+       id="path4576"
+       sodipodi:nodetypes="ccccccc" />
+    <path
+       style="fill:#ffad01;fill-opacity:1;stroke:none;stroke-width:0.0249955px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 18.485324,1.3356369e-6 20.216674,0.06394681 12.848368,25.130736 10.996226,25.322572 Z"
+       id="path5304" />
+  </g>
+  <g
+     inkscape:label="Réteg 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <text
+       xml:space="preserve"
+       transform="scale(0.26458333)"
+       id="text1972"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect1974);fill:#000000;fill-opacity:1;stroke:none" />
+  </g>
+</svg>
