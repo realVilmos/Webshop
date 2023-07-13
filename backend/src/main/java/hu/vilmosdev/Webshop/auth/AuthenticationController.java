@@ -1,14 +1,12 @@
 package hu.vilmosdev.Webshop.auth;
 
+import hu.vilmosdev.Webshop.config.LogoutService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -18,6 +16,7 @@ import java.io.IOException;
 public class AuthenticationController {
 
   private final AuthenticationService service;
+  private final LogoutService logoutService;
 
   /*
   Példa a register használatára JSON-ban
@@ -61,10 +60,5 @@ public class AuthenticationController {
   @PostMapping("/refresh-token")
   public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException{
     service.refreshToken(request, response);
-  }
-
-  @PostMapping
-  public void logout(@RequestBody AuthenticationRequest request){
-    //to implement
   }
 }

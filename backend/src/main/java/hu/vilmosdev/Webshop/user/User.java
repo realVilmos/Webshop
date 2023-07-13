@@ -1,5 +1,6 @@
 package hu.vilmosdev.Webshop.user;
 
+import hu.vilmosdev.Webshop.token.Token;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,9 +33,12 @@ public class User implements UserDetails {
   @Enumerated(EnumType.STRING)
   private Role role;
 
+  @OneToMany(mappedBy = "user")
+  private List<Token> tokens;
+
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return List.of(new SimpleGrantedAuthority(this.role.name()));
+    return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
   }
 
   @Override
@@ -65,5 +69,18 @@ public class User implements UserDetails {
   @Override
   public String getPassword(){
     return this.password;
+  }
+
+  @Override
+  public String toString() {
+    return "User{" +
+      "id=" + id +
+      ", firstname='" + firstname + '\'' +
+      ", lastname='" + lastname + '\'' +
+      ", email='" + email + '\'' +
+      ", username='" + username + '\'' +
+      ", password='" + password + '\'' +
+      ", role=" + role +
+      '}';
   }
 }

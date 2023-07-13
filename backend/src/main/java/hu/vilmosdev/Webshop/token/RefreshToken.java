@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Token {
+public class RefreshToken {
   @Id
   @GeneratedValue
   protected Integer id;
