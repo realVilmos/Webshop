@@ -1,5 +1,8 @@
 package hu.vilmosdev.Webshop.config;
 
+import hu.vilmosdev.Webshop.token.RefreshToken;
+import hu.vilmosdev.Webshop.token.RefreshTokenRepository;
+import hu.vilmosdev.Webshop.token.Token;
 import hu.vilmosdev.Webshop.token.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 public class LogoutService implements LogoutHandler {
 
   private final TokenRepository tokenRepository;
+  private final RefreshTokenRepository refreshTokenRepository;
 
   @Override
   public void logout(
@@ -21,7 +25,6 @@ public class LogoutService implements LogoutHandler {
     HttpServletResponse response,
     Authentication authentication
     ){
-    System.out.println("Request: " + request);
     final String authHeader = request.getHeader("Authorization");
     final String jwt;
 
@@ -30,12 +33,18 @@ public class LogoutService implements LogoutHandler {
     }
 
     jwt = authHeader.substring(7);
-    var storedToken = tokenRepository.findByToken(jwt).orElse(null);
-    if(storedToken != null){
-      storedToken.setExpired(true);
-      storedToken.setRevoked(true);
-      tokenRepository.save(storedToken);
-      SecurityContextHolder.clearContext();
-    }
+
+    Token accessToken = tokenRepository.findByToken(jwt).orElseThrow();
+    accessToken.setExpired(true);
+    accessToken.setRevoked(true);
+    tokenRepository.save(accessToken);
+
+    RefreshToken refreshToken = refreshTokenRepository.findById(accessToken.getId()).orElseThrow();
+    refreshToken.setExpired(true);
+    refreshToken.setRevoked(true);
+    refreshTokenRepository.save(refreshToken);
+
+    SecurityContextHolder.clearContext();
+
   }
 }

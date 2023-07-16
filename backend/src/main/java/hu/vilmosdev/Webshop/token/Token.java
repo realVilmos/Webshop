@@ -15,18 +15,22 @@ import lombok.NoArgsConstructor;
 public class Token {
   @Id
   @GeneratedValue
-  protected Integer id;
+  private Long id;
 
   @Column(unique = true)
-  protected String token;
+  private String token;
 
-  protected boolean revoked;
+  @OneToOne(cascade = CascadeType.PERSIST)
+  @JoinColumn(name = "id")
+  private RefreshToken relatedTo;
 
-  protected boolean expired;
+  private boolean revoked;
+
+  private boolean expired;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
-  protected User user;
+  private User user;
 
   @Override
   public String toString() {

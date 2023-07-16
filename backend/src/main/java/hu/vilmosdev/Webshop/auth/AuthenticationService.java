@@ -1,5 +1,5 @@
 package hu.vilmosdev.Webshop.auth;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import hu.vilmosdev.Webshop.auth.Exceptions.InsufficientKeyException;
 import hu.vilmosdev.Webshop.config.JwtService;
 import hu.vilmosdev.Webshop.token.RefreshToken;
 import hu.vilmosdev.Webshop.token.RefreshTokenRepository;
@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -44,14 +45,15 @@ public class AuthenticationService {
       .role(Role.USER)
       .build();
 
-    var savedUser = repository.save(user);
-    var jwtToken = jwtService.generateToken(user);
-    var refreshToken = jwtService.generateRefreshToken(user);
-    saveAccessToken(savedUser, jwtToken);
-    saveRefreshToken(savedUser, refreshToken);
+    User savedUser = repository.save(user);
+    var jwtAccessToken = jwtService.generateToken(user);
+    var jwtRefreshToken = jwtService.generateRefreshToken(user);
+
+    saveTokens(user, jwtAccessToken, jwtRefreshToken);
+
     return AuthenticationResponse.builder()
-      .accessToken(jwtToken)
-      .refreshToken(refreshToken)
+      .accessToken(jwtAccessToken)
+      .refreshToken(jwtRefreshToken)
       .build();
   }
 
@@ -59,37 +61,45 @@ public class AuthenticationService {
     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
     var user = repository.findByEmail(request.getEmail()).orElseThrow();
-    System.out.println(user);
-    var jwtToken = jwtService.generateToken(user);
-    var refreshToken = jwtService.generateRefreshToken(user);
-    revokeAllUserTokens(user);
-    saveAccessToken(user, jwtToken);
+    var jwtAccessToken = jwtService.generateToken(user);
+    var jwtRefreshToken = jwtService.generateRefreshToken(user);
+
+    saveTokens(user, jwtAccessToken, jwtRefreshToken);
+
     return AuthenticationResponse.builder()
-      .accessToken(jwtToken)
-      .refreshToken(refreshToken)
+      .accessToken(jwtAccessToken)
+      .refreshToken(jwtRefreshToken)
       .build();
   }
 
-  private void saveAccessToken(User user, String jwtToken) {
-    var token = Token.builder()
+  private Token buildAccessToken(User user, String jwtToken) {
+    return Token.builder()
       .user(user)
       .token(jwtToken)
       .expired(false)
       .revoked(false)
       .build();
-    tokenRepository.save(token);
   }
 
-  private void saveRefreshToken(User user, String jtwRefreshToken){
-    var token = RefreshToken.builder()
+  private RefreshToken buildRefreshToken(User user, String jtwRefreshToken){
+    return RefreshToken.builder()
       .user(user)
       .token(jtwRefreshToken)
       .expired(false)
       .revoked(false)
       .build();
-    refreshTokenRepository.save(token);
   }
 
+  private void saveTokens(User user, String jwtAccessToken, String jwtRefreshToken){
+    Token accessToken = buildAccessToken(user, jwtAccessToken);
+    RefreshToken refreshToken = buildRefreshToken(user, jwtRefreshToken);
+    refreshTokenRepository.save(refreshToken);
+    accessToken.setRelatedTo(refreshToken);
+    refreshToken.setRelatedTo(accessToken);
+    tokenRepository.save(accessToken);
+  }
+
+  // Hard kijelentkeztetésre ha minden eszközről kiszeretne jelentkezni a felhasználó vagy mi akarjuk kiléptetni mindenhonnan
   private void revokeAllUserTokens(User user) {
     var validAccessUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
     var validRefreshUserTokens = refreshTokenRepository.findAllValidTokenByUser(user.getId());
@@ -109,32 +119,50 @@ public class AuthenticationService {
     refreshTokenRepository.saveAll(validRefreshUserTokens);
   }
 
-  public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException{
+  public void revokeRefreshAndRelatedAccessToken(String jwtRefreshToken){
+    RefreshToken refreshToken = refreshTokenRepository.findByToken(jwtRefreshToken).orElseThrow();
+    refreshToken.setRevoked(true);
+    refreshToken.setExpired(true);
+
+    Token token = tokenRepository.findById(refreshToken.getId()).orElseThrow();
+    token.setRevoked(true);
+    token.setExpired(true);
+
+    tokenRepository.save(token);
+    refreshTokenRepository.save(refreshToken);
+
+  }
+
+  //Ez a function invalidálja a jelenlegi refresh tokent és a hozzá tartozó access tokent.
+  public AuthenticationResponse refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException{
     final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
     final String refreshToken;
     final String userEmail;
     if(authHeader == null || !authHeader.startsWith("Bearer ")){
-      return;
+      throw new InsufficientKeyException("Invalid or missing refresh token");
     }
 
     refreshToken = authHeader.substring(7);
+
     userEmail = jwtService.extractUsername(refreshToken);
     if (userEmail != null){
       var user = this.repository.findByEmail(userEmail).orElseThrow();
       if(jwtService.isTokenValid(refreshToken, user)){
-        var accessToken = jwtService.generateToken(user);
-        revokeAllUserTokens(user);
-        saveAccessToken(user, accessToken);
-        saveRefreshToken(user, refreshToken);
-        var authResponse = AuthenticationResponse.builder()
-          .accessToken(accessToken)
-          .refreshToken(refreshToken)
+
+        //Invalidálni kell a beérkező refresh tokent és a hozzá tartozó Tokent
+        revokeRefreshAndRelatedAccessToken(refreshToken);
+
+        var jwtAccessToken = jwtService.generateToken(user);
+        var jwtRefreshToken = jwtService.generateRefreshToken(user);
+
+        saveTokens(user, jwtAccessToken, jwtRefreshToken);
+
+        return AuthenticationResponse.builder()
+          .accessToken(jwtAccessToken)
+          .refreshToken(jwtRefreshToken)
           .build();
-        new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
       }
     }
+    return null;
   }
-
-
-
 }

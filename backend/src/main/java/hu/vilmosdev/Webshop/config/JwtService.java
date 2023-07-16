@@ -20,7 +20,8 @@ public class JwtService {
   //normális esetben ezt nem szabadna pusholni Git-re
   private static final String SECRET_KEY = "ed4aacb7bf2c6cf85c486adf1cfb459a384a3f41003651caf0033fc2e5b4f5457546d3b10c649d490490326597e00e6fbfaa575f5f6aafed237e557b61f623c2";
   private static final long jwtExpiration = 86400000; //Egy nap
-  private static final long refreshExpiration = 604800000; //Hét nap
+  //Ez lehet nagyon nagy, mivel egyszer használatos
+  private static final long refreshExpiration = 31536000000L; //Egy év
 
   public String extractUsername(String token) {
     return extractClaim(token, Claims::getSubject);
