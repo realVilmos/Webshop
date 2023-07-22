@@ -14,8 +14,8 @@ public class ShopItemService {
     return null;
   }
 
-  public List<ShopItem> findByCategory(String category) {
-    return null;
+  public List<ShopItem> findByCategory(List<String> categoriesList) {
+    return shopItemRepository.findByCategoriesIn(categoriesList);
   }
 
   public ShopItem getShopItemById(Long id){

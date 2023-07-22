@@ -17,8 +17,9 @@ public class ShopItemController {
     return shopItemService.getRandomItems();
   }
 
-  @GetMapping("/categories/{category}")
-  public List<ShopItem> getItemsByCategory(@PathVariable String category){
+  @GetMapping("/categories")
+  public List<ShopItem> getItemsByCategory(@RequestParam List<String> category){
+    System.out.println(category);
     return shopItemService.findByCategory(category);
   }
 

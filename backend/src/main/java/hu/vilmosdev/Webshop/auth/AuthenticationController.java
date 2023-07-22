@@ -1,5 +1,5 @@
 package hu.vilmosdev.Webshop.auth;
-
+import hu.vilmosdev.Webshop.config.CustomJwtException;
 import hu.vilmosdev.Webshop.config.LogoutService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -57,8 +57,8 @@ public class AuthenticationController {
     return ResponseEntity.ok(service.authenticate(request));
   }
 
-  @PostMapping("/refresh-token")
-  public ResponseEntity<AuthenticationResponse> refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException{
+  @GetMapping("/refresh-token")
+  public ResponseEntity<AuthenticationResponse> refreshToken(HttpServletRequest request, HttpServletResponse response) throws CustomJwtException {
     return ResponseEntity.ok(service.refreshToken(request, response));
   }
 }

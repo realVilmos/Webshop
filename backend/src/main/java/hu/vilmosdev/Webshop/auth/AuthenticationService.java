@@ -1,5 +1,5 @@
 package hu.vilmosdev.Webshop.auth;
-import hu.vilmosdev.Webshop.auth.Exceptions.InsufficientKeyException;
+import hu.vilmosdev.Webshop.config.CustomJwtException;
 import hu.vilmosdev.Webshop.config.JwtService;
 import hu.vilmosdev.Webshop.token.RefreshToken;
 import hu.vilmosdev.Webshop.token.RefreshTokenRepository;
@@ -14,11 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -58,7 +56,11 @@ public class AuthenticationService {
   }
 
   public AuthenticationResponse authenticate(AuthenticationRequest request) {
-    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+    try {
+      authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+    }catch(Exception ex){
+      throw new UsernameNotFoundException(ex.getMessage());
+    }
 
     var user = repository.findByEmail(request.getEmail()).orElseThrow();
     var jwtAccessToken = jwtService.generateToken(user);
@@ -119,8 +121,8 @@ public class AuthenticationService {
     refreshTokenRepository.saveAll(validRefreshUserTokens);
   }
 
-  public void revokeRefreshAndRelatedAccessToken(String jwtRefreshToken){
-    RefreshToken refreshToken = refreshTokenRepository.findByToken(jwtRefreshToken).orElseThrow();
+  public void revokeRefreshAndRelatedAccessToken(String jwtRefreshToken) throws CustomJwtException {
+    RefreshToken refreshToken = refreshTokenRepository.findByToken(jwtRefreshToken).orElseThrow(()-> new CustomJwtException("Token not found"));
     refreshToken.setRevoked(true);
     refreshToken.setExpired(true);
 
@@ -134,19 +136,18 @@ public class AuthenticationService {
   }
 
   //Ez a function invalidálja a jelenlegi refresh tokent és a hozzá tartozó access tokent.
-  public AuthenticationResponse refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException{
+  public AuthenticationResponse refreshToken(HttpServletRequest request, HttpServletResponse response) throws CustomJwtException {
     final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
     final String refreshToken;
     final String userEmail;
     if(authHeader == null || !authHeader.startsWith("Bearer ")){
-      throw new InsufficientKeyException("Invalid or missing refresh token");
+      throw new CustomJwtException("Invalid or missing refresh token");
     }
 
     refreshToken = authHeader.substring(7);
-
     userEmail = jwtService.extractUsername(refreshToken);
     if (userEmail != null){
-      var user = this.repository.findByEmail(userEmail).orElseThrow();
+      var user = this.repository.findByEmail(userEmail).orElseThrow(()-> new UsernameNotFoundException("User not found"));
       if(jwtService.isTokenValid(refreshToken, user)){
 
         //Invalidálni kell a beérkező refresh tokent és a hozzá tartozó Tokent

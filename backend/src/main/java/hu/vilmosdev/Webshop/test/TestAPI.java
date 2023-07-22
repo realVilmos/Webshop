@@ -1,21 +1,17 @@
-package hu.vilmosdev.Webshop.admin;
+package hu.vilmosdev.Webshop.test;
+
 import hu.vilmosdev.Webshop.ShopItem.ItemRequest;
-import hu.vilmosdev.Webshop.ShopItem.ShopItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/admin/")
+@RequestMapping("/api/loggedin")
 @RequiredArgsConstructor
-public class AdminController {
-
-  private final ShopItemService service;
-  @PostMapping("create-item")
+public class TestAPI {
+  @GetMapping("")
   public ResponseEntity register(@RequestBody ItemRequest request){
-    service.createShopItem(request);
     return ResponseEntity.ok().build();
   }
-
 
 }
