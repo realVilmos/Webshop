@@ -8,15 +8,22 @@ import hu.vilmosdev.Webshop.token.TokenRepository;
 import hu.vilmosdev.Webshop.user.Role;
 import hu.vilmosdev.Webshop.user.User;
 import hu.vilmosdev.Webshop.user.UserRepository;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.io.UnsupportedEncodingException;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -29,30 +36,28 @@ public class AuthenticationService {
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
 
+  private final JavaMailSender mailSender;
+
   public boolean doesUserExist(String email){
     var savedUser = repository.findByEmail(email);
     return savedUser.isPresent();
   }
 
-  public AuthenticationResponse register(RegisterRequest request) {
+  public void register(RegisterRequest request) throws MessagingException, UnsupportedEncodingException {
+    String randomCode = generateRandomString(64);
     var user = User.builder()
       .firstname(request.getFirstname())
       .lastname(request.getLastname())
       .email(request.getEmail())
       .password(passwordEncoder.encode(request.getPassword()))
       .role(Role.USER)
+      .enabled(false)
+      .verificationCode(randomCode)
       .build();
+    repository.save(user);
 
-    User savedUser = repository.save(user);
-    var jwtAccessToken = jwtService.generateToken(user);
-    var jwtRefreshToken = jwtService.generateRefreshToken(user);
+    sendVerificationEmail(user);
 
-    saveTokens(user, jwtAccessToken, jwtRefreshToken);
-
-    return AuthenticationResponse.builder()
-      .accessToken(jwtAccessToken)
-      .refreshToken(jwtRefreshToken)
-      .build();
   }
 
   public AuthenticationResponse authenticate(AuthenticationRequest request) {
@@ -62,15 +67,19 @@ public class AuthenticationService {
       throw new UsernameNotFoundException(ex.getMessage());
     }
 
-    var user = repository.findByEmail(request.getEmail()).orElseThrow();
-    var jwtAccessToken = jwtService.generateToken(user);
-    var jwtRefreshToken = jwtService.generateRefreshToken(user);
+    User savedUser = repository.findByEmail(request.getEmail()).orElseThrow();
+    var jwtAccessToken = jwtService.generateToken(savedUser);
+    var jwtRefreshToken = jwtService.generateRefreshToken(savedUser);
 
-    saveTokens(user, jwtAccessToken, jwtRefreshToken);
+    saveTokens(savedUser, jwtAccessToken, jwtRefreshToken);
 
     return AuthenticationResponse.builder()
       .accessToken(jwtAccessToken)
       .refreshToken(jwtRefreshToken)
+      .firstName(savedUser.getFirstname())
+      .lastName(savedUser.getLastname())
+      .email(savedUser.getEmail())
+      .role(savedUser.getRole())
       .build();
   }
 
@@ -165,5 +174,62 @@ public class AuthenticationService {
       }
     }
     return null;
+  }
+
+  private void sendVerificationEmail(User user) throws MessagingException, UnsupportedEncodingException {
+    String toAddress = user.getEmail();
+    String fromAddress = "realvilmos@gmail.com";
+    String senderName = "A webshop cég";
+    String subject = "Kérlek hagyd jóvá a regisztrációt";
+    String content = "Kedves [[name]],<br>"
+      + "Kérlek nyomd meg az alábbi linket a regisztráláshoz:<br>"
+      + "<h3><a href=\"[[URL]]\" target=\"_self\">Megerősítés</a></h3>"
+      + "Köszönöm,<br>"
+      + "Egy webshop cég.";
+
+    MimeMessage message = mailSender.createMimeMessage();
+    MimeMessageHelper helper = new MimeMessageHelper(message);
+
+    helper.setFrom(fromAddress, senderName);
+    helper.setTo(toAddress);
+    helper.setSubject(subject);
+
+    content = content.replace("[[name]]", user.getFirstname() + " " + user.getLastname());
+    String verifyURL = "http://localhost:4200" + "/verify?code=" + user.getVerificationCode();
+
+    content = content.replace("[[URL]]", verifyURL);
+
+    helper.setText(content, true);
+
+    mailSender.send(message);
+  }
+
+  private String generateRandomString(int length) {
+    String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    Random random = new Random();
+    StringBuilder sb = new StringBuilder(length);
+
+    for (int i = 0; i < length; i++) {
+      int randomIndex = random.nextInt(CHARACTERS.length());
+      char randomChar = CHARACTERS.charAt(randomIndex);
+      sb.append(randomChar);
+    }
+
+    return sb.toString();
+  }
+
+  public boolean verify(String verificationCode) {
+    User user = repository.findByVerificationCode(verificationCode);
+
+    if (user == null || user.isEnabled()) {
+      return false;
+    } else {
+      user.setVerificationCode(null);
+      user.setEnabled(true);
+      repository.save(user);
+
+      return true;
+    }
+
   }
 }

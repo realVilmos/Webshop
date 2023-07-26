@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -42,12 +43,9 @@ public class SecurityConfiguration {
       .csrf(AbstractHttpConfigurer::disable)
       .authorizeHttpRequests((authorizeHttpRequests) ->
         authorizeHttpRequests
-          .requestMatchers("/api/auth/**", "/api/items/**")
-          .permitAll()
-
+          .requestMatchers("/api/auth/**").permitAll()
+          .requestMatchers(HttpMethod.GET,"/api/items/**").permitAll()
           .requestMatchers("/api/admin/**").hasRole(Role.ADMIN.name())
-
-
           .anyRequest()
           .authenticated()
       ).exceptionHandling(exceptionHandlingConfigurer -> {
@@ -56,7 +54,7 @@ public class SecurityConfiguration {
           response.getWriter().write("User not authenticated");
         });
         exceptionHandlingConfigurer.accessDeniedHandler((request, response, authException) -> {
-          response.setStatus(HttpStatus.UNAUTHORIZED.value());
+          response.setStatus(HttpStatus.FORBIDDEN.value());
           response.getWriter().write("You do not have permission to access this resource");
         });
       })

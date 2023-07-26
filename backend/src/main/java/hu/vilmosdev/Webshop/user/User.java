@@ -27,14 +27,20 @@ public class User implements UserDetails {
   private String firstname;
   private String lastname;
   private String email;
-  private String username;
   private String password;
+
+  @Column(name = "verification_code", length = 64)
+  private String verificationCode;
+
+  private boolean enabled;
 
   @Enumerated(EnumType.STRING)
   private Role role;
 
   @OneToMany(mappedBy = "user")
   private List<Token> tokens;
+
+  private Address address;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -63,7 +69,7 @@ public class User implements UserDetails {
 
   @Override
   public boolean isEnabled() {
-    return true;
+    return this.enabled;
   }
 
   @Override
@@ -78,7 +84,6 @@ public class User implements UserDetails {
       ", firstname='" + firstname + '\'' +
       ", lastname='" + lastname + '\'' +
       ", email='" + email + '\'' +
-      ", username='" + username + '\'' +
       ", password='" + password + '\'' +
       ", role=" + role +
       '}';

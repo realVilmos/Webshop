@@ -1,14 +1,17 @@
 package hu.vilmosdev.Webshop.auth;
 import hu.vilmosdev.Webshop.config.CustomJwtException;
 import hu.vilmosdev.Webshop.config.LogoutService;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -16,41 +19,18 @@ import java.io.IOException;
 public class AuthenticationController {
 
   private final AuthenticationService service;
-  private final LogoutService logoutService;
-
-  /*
-  Példa a register használatára JSON-ban
-  {
-    "firstname": "Vilmos",
-    "lastname": "Bognár",
-    "email": "valami@email.asd",
-    "password": "1234"
-  }
-
-  Ha sikeres a register -> 200 status code
-  Ha létezik a felhasználó -> 409 conflict
-   */
 
   @PostMapping("/register")
-  public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request){
+  public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) throws MessagingException, UnsupportedEncodingException {
     if(service.doesUserExist(request.getEmail())){
       return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 
-    return ResponseEntity.ok(service.register(request));
+    service.register(request);
+
+    return ResponseEntity.ok().build();
 
   }
-
-  /*
-  Példa az authenticate használatára JSON-ban
-  {
-    "email": "valami@email.asd",
-    "password": "1234"
-  }
-
-  Ha sikeres a register -> 200 status code
-  Ha nem létezik a felhasználó/rosszak az adatok -> 403 fobidden
-   */
 
   @PostMapping("/authenticate")
   public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request){
@@ -60,5 +40,14 @@ public class AuthenticationController {
   @GetMapping("/refresh-token")
   public ResponseEntity<AuthenticationResponse> refreshToken(HttpServletRequest request, HttpServletResponse response) throws CustomJwtException {
     return ResponseEntity.ok(service.refreshToken(request, response));
+  }
+
+  @GetMapping("/verify")
+  public ResponseEntity<String> verifyUser(@Param("code") String code) {
+    if (service.verify(code)) {
+      return ResponseEntity.ok().body("{\"message\": \"verify_success\"}");
+    } else {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("verify_fail");
+    }
   }
 }
