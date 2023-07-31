@@ -1,6 +1,4 @@
 package hu.vilmosdev.Webshop.user;
-
-import hu.vilmosdev.Webshop.auth.AuthenticationService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
