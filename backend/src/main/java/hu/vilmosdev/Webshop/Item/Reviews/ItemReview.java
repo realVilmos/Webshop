@@ -1,6 +1,6 @@
-package hu.vilmosdev.Webshop.ShopItem.Reviews;
+package hu.vilmosdev.Webshop.Item.Reviews;
 
-import hu.vilmosdev.Webshop.ShopItem.Item;
+import hu.vilmosdev.Webshop.Item.Item;
 import hu.vilmosdev.Webshop.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,6 +22,8 @@ public class ItemReview {
   private int rating;
   private String comment;
   private LocalDate reviewDate;
+
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
   private User user;
 

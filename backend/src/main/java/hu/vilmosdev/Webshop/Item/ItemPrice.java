@@ -1,4 +1,4 @@
-package hu.vilmosdev.Webshop.ShopItem;
+package hu.vilmosdev.Webshop.Item;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,8 +17,8 @@ public class ItemPrice {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
-  private double originalPrice;
-  private double salePrice;
+  private Long originalPrice;
+  private Long salePrice;
   private boolean isOnSale;
   private LocalDate saleEndDate;
 }

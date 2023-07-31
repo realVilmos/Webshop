@@ -1,13 +1,13 @@
-package hu.vilmosdev.Webshop.ShopItem;
+package hu.vilmosdev.Webshop.Item;
 
-import lombok.Builder;
-import lombok.Data;
-
-import java.time.LocalDate;
+import lombok.*;
 
 @Data
 @Builder
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class ItemResponse {
+  private Long id;
   private String name;
   private String description;
   private String category;
@@ -16,10 +16,7 @@ public class ItemResponse {
   private float weight;
   private String dimensions;
   private int quantityInStock;
-  private String vendor;
+  private Long vendor;
 
-  private Long originalPrice;
-  private boolean isOnSale;
-  private Long salePrice;
-  private LocalDate saleEndDate;
+  private ItemPrice price;
 }

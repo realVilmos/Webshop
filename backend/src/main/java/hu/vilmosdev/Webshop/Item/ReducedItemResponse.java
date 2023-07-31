@@ -1,4 +1,4 @@
-package hu.vilmosdev.Webshop.ShopItem;
+package hu.vilmosdev.Webshop.Item;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

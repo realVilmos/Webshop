@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthenticationResponse {
+  @JsonProperty("user_id")
+  private Long userId;
   @JsonProperty("email")
   private String email;
   @JsonProperty("first_name")

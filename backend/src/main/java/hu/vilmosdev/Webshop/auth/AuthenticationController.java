@@ -1,16 +1,12 @@
 package hu.vilmosdev.Webshop.auth;
 import hu.vilmosdev.Webshop.config.CustomJwtException;
-import hu.vilmosdev.Webshop.config.LogoutService;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 @RestController
@@ -38,8 +34,8 @@ public class AuthenticationController {
   }
 
   @GetMapping("/refresh-token")
-  public ResponseEntity<AuthenticationResponse> refreshToken(HttpServletRequest request, HttpServletResponse response) throws CustomJwtException {
-    return ResponseEntity.ok(service.refreshToken(request, response));
+  public ResponseEntity<AuthenticationResponse> refreshToken(HttpServletRequest request) throws CustomJwtException {
+    return ResponseEntity.ok(service.refreshToken(request));
   }
 
   @GetMapping("/verify")

@@ -1,86 +1,151 @@
-package hu.vilmosdev.Webshop.ShopItem;
-
+package hu.vilmosdev.Webshop.Item;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ItemService {
-  private final ItemRepository shopItemRepository;
+  private final ItemRepository itemRepository;
+  private final VendorRepository vendorRepository;
+
+  private static final Logger logger = LoggerFactory.getLogger(ItemService.class);
   public List<Item> getRandomItems(){
     //To implement
     return null;
   }
 
   public Item getShopItemById(Long id){
-    return shopItemRepository.getReferenceById(id);
+    return itemRepository.getReferenceById(id);
   }
 
-  public void createShopItem(ItemRequest request){
+  public void createShopItem(ItemCreationRequest request){
+    try{
+      ItemPrice price = new ItemPrice();
+      price.setOriginalPrice(request.getOriginalPrice());
 
-    ItemPrice price = ItemPrice.builder()
-      .originalPrice(request.getOriginalPrice())
-      .isOnSale(request.isOnSale())
-      .salePrice(request.getSalePrice())
-      .saleEndDate(request.getSaleEndDate())
-      .build();
+      if(request.isOnSale()){
+        price.setOnSale(true);
+        price.setSalePrice(request.getSalePrice());
+        price.setSaleEndDate(request.getSaleEndDate());
+      }else{
+        price.setOnSale(false);
+      }
 
-    var shopItem = Item.builder()
-      .name(request.getName())
-      .category(request.getCategory())
-      .description(request.getDescription())
-      .vendor(request.getVendor())
-      .quantityInStock(request.getQuantityInStock())
-      .imgUrl(request.getImgUrl())
-      .weight(request.getWeight())
-      .dimensions(request.getDimensions())
-      .manufacturer(request.getManufacturer())
-      .itemPrice(price)
-      .build();
+      var shopItem = Item.builder()
+        .name(request.getName())
+        .category(request.getCategory())
+        .description(request.getDescription())
+        .vendor(vendorRepository.getReferenceById(request.getVendor()))
+        .quantityInStock(request.getQuantityInStock())
+        .imgUrl(request.getImgUrl())
+        .weight(request.getWeight())
+        .dimensions(request.getDimensions())
+        .manufacturer(request.getManufacturer())
+        .itemPrice(price)
+        .build();
 
-    shopItemRepository.save(shopItem);
+      itemRepository.save(shopItem);
+    }catch (Exception e) {
+      logger.error("Error during creation of the item: " + e.getMessage());
+      e.printStackTrace();
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during creation of the item: ", e);
+    }
   }
 
 
   public ResponseEntity<Page<ReducedItemResponse>> findByCategoryIn(List<String> categories, Pageable pageable) {
-    Page<Item> items = shopItemRepository.findByCategoryIn(categories, pageable);
-    return ResponseEntity.ok(reduceItemProperies(items, pageable));
+    try{
+      Page<Item> items = itemRepository.findByCategoryIn(categories, pageable);
+      return ResponseEntity.ok(new PageImpl<>(reduceItemProperies(items), pageable, items.getTotalElements()));
+    }catch (Exception e) {
+      logger.error("Error when getting items by category: " + e.getMessage());
+      e.printStackTrace();
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error when getting items by category: ", e);
+    }
   }
 
   public ResponseEntity<Page<ReducedItemResponse>> findByVendorIn(List<String> vendors, Pageable pageable) {
-    Page<Item> items = shopItemRepository.findByVendorIn(vendors, pageable);
-    return ResponseEntity.ok(reduceItemProperies(items, pageable));
+    try{
+      Page<Item> items = itemRepository.findByVendorIn(vendors, pageable);
+      return ResponseEntity.ok(new PageImpl<>(reduceItemProperies(items), pageable, items.getTotalElements()));
+    }catch (Exception e) {
+      logger.error("Error when getting items by vendor: " + e.getMessage());
+      e.printStackTrace();
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error when getting items by vendor: ", e);
+    }
   }
 
   public ResponseEntity<Page<ReducedItemResponse>> findByCategoryInAndVendorIn(List<String> categories, List<String> vendors, Pageable pageable) {
-    Page<Item> items = shopItemRepository.findByCategoryInAndVendorIn(categories, vendors, pageable);
-    return ResponseEntity.ok(reduceItemProperies(items, pageable));
+    try{
+      Page<Item> items = itemRepository.findByCategoryInAndVendorIn(categories, vendors, pageable);
+      return ResponseEntity.ok(new PageImpl<>(reduceItemProperies(items), pageable, items.getTotalElements()));
+    }catch (Exception e) {
+      logger.error("Error when getting items by vendor and category: " + e.getMessage());
+      e.printStackTrace();
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error when getting items by vendor and category: ", e);
+    }
   }
 
   public ResponseEntity<Page<ReducedItemResponse>> findRandom(Pageable pageable) {
-    Page<Item> items = shopItemRepository.findRandom(pageable);
-    return ResponseEntity.ok(reduceItemProperies(items, pageable));
-  }
-
-  public ResponseEntity<Item> findById(Long id) {
-    Optional<Item> itemOptional = shopItemRepository.findById(id);
-
-    if(itemOptional.isEmpty()){
-      return ResponseEntity.notFound().build();
+    try{
+      Page<Item> items = itemRepository.findRandom(pageable);
+      return ResponseEntity.ok(new PageImpl<>(reduceItemProperies(items), pageable, items.getTotalElements()));
+    }catch (Exception e) {
+      logger.error("Error when getting random items: " + e.getMessage());
+      e.printStackTrace();
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error when getting random items: ", e);
     }
-
-    return ResponseEntity.ok(itemOptional.get());
   }
 
-  private Page<ReducedItemResponse> reduceItemProperies(Page<Item> items, Pageable pageable){
-    List<ReducedItemResponse> reducedItemResponses = items.getContent().stream().map(item -> {
+  public ResponseEntity<ItemResponse> findByIdForUser(Long id) {
+    try{
+      Item item = itemRepository.getReferenceById(id);
+
+      ItemResponse request = ItemResponse.builder()
+        .price(item.getItemPrice())
+        .name(item.getName())
+        .imgUrl(item.getImgUrl())
+        .quantityInStock(item.getQuantityInStock())
+        .category(item.getCategory())
+        .weight(item.getWeight())
+        .description(item.getDescription())
+        .dimensions(item.getDimensions())
+        .manufacturer(item.getManufacturer())
+        .id(item.getId())
+        .build();
+
+      return ResponseEntity.ok(request);
+    }
+    catch (Exception e) {
+      logger.error("Error when getting item by id: " + e.getMessage());
+      e.printStackTrace();
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error when getting item by id: ", e);
+    }
+  }
+
+  public List<ItemResponse> getItemsByIdsForUser(List<Long> ids){
+    try{}
+    catch (Exception e) {
+      logger.error("Error when getting items by ids: " + e.getMessage());
+      e.printStackTrace();
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error when getting items by ids: ", e);
+    }
+    List<Item> items = itemRepository.findAllById(ids);
+    return toItemResponseList(items);
+  }
+
+  private List<ReducedItemResponse> reduceItemProperies(Page<Item> items){
+    return items.getContent().stream().map(item -> {
       ReducedItemResponse rir = new ReducedItemResponse();
       rir.setName(item.getName());
       rir.setItemPrice(item.getItemPrice());
@@ -90,7 +155,22 @@ public class ItemService {
 
       return rir;
     }).toList();
+  }
 
-    return new PageImpl<>(reducedItemResponses, pageable, items.getTotalElements());
+  private List<ItemResponse> toItemResponseList(List<Item> items){
+    return items.stream().map(item -> {
+      return ItemResponse.builder()
+        .id(item.getId())
+        .price(item.getItemPrice())
+        .category(item.getCategory())
+        .description(item.getDescription())
+        .dimensions(item.getDimensions())
+        .manufacturer(item.getManufacturer())
+        .quantityInStock(item.getQuantityInStock())
+        .name(item.getName())
+        .imgUrl(item.getImgUrl())
+        .weight(item.getWeight())
+        .build();
+    }).toList();
   }
 }

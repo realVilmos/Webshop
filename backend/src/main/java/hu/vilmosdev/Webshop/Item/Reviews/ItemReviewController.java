@@ -1,6 +1,5 @@
-package hu.vilmosdev.Webshop.ShopItem.Reviews;
+package hu.vilmosdev.Webshop.Item.Reviews;
 
-import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;

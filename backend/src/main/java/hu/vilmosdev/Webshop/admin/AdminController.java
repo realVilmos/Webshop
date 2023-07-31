@@ -1,6 +1,5 @@
 package hu.vilmosdev.Webshop.admin;
-import hu.vilmosdev.Webshop.ShopItem.ItemRequest;
-import hu.vilmosdev.Webshop.ShopItem.ItemService;
+import hu.vilmosdev.Webshop.Item.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,13 +9,19 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AdminController {
 
-  private final ItemService service;
+  private final ItemService itemService;
+  private final VendorService vendorService;
+
   @PostMapping("create-item")
-  public ResponseEntity<String> register(@RequestBody ItemRequest request){
-    System.out.println(request);
-    service.createShopItem(request);
+  public ResponseEntity<String> register(@RequestBody ItemCreationRequest request){
+    itemService.createShopItem(request);
     return ResponseEntity.ok().build();
   }
 
+  @PostMapping("create-vendor")
+  public ResponseEntity<String> register(@RequestBody Vendor vendor){
+    vendorService.saveVendor(vendor);
+    return ResponseEntity.ok().build();
+  }
 
 }

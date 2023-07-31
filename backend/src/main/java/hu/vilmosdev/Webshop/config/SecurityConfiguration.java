@@ -1,6 +1,5 @@
 package hu.vilmosdev.Webshop.config;
 import hu.vilmosdev.Webshop.user.Role;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,9 +13,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -43,7 +40,7 @@ public class SecurityConfiguration {
       .csrf(AbstractHttpConfigurer::disable)
       .authorizeHttpRequests((authorizeHttpRequests) ->
         authorizeHttpRequests
-          .requestMatchers("/api/auth/**").permitAll()
+          .requestMatchers("/api/auth/**", "/api/payment/").permitAll()
           .requestMatchers(HttpMethod.GET,"/api/items/**").permitAll()
           .requestMatchers("/api/admin/**").hasRole(Role.ADMIN.name())
           .anyRequest()

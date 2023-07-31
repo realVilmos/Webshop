@@ -40,7 +40,11 @@ public class User implements UserDetails {
   @OneToMany(mappedBy = "user")
   private List<Token> tokens;
 
-  private Address address;
+  @OneToMany()
+  private List<Address> addresses;
+
+  @OneToMany()
+  private List<BillingAddress> billingAddresses;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

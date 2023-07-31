@@ -1,16 +1,12 @@
-package hu.vilmosdev.Webshop.ShopItem;
+package hu.vilmosdev.Webshop.Item;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Builder
 @Data
-public class ItemRequest {
+public class ItemCreationRequest {
   private String name;
   private String description;
   private String category;
@@ -19,7 +15,7 @@ public class ItemRequest {
   private float weight;
   private String dimensions;
   private int quantityInStock;
-  private String vendor;
+  private Long vendor;
 
   private Long originalPrice;
   private boolean isOnSale;

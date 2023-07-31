@@ -1,4 +1,4 @@
-package hu.vilmosdev.Webshop.ShopItem;
+package hu.vilmosdev.Webshop.Item;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +11,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
   Page<Item> findByCategoryIn(List<String> categories, Pageable pageable);
   Page<Item> findByCategoryInAndVendorIn(List<String> categories, List<String> vendors, Pageable pageable);
   Page<Item> findByVendorIn(List<String> vendors, Pageable pageable);
-  @Query("SELECT i FROM ShopItem i ORDER BY RANDOM()")
+  @Query("SELECT i FROM Item i ORDER BY RANDOM()")
   Page<Item> findRandom(Pageable pageable);
+
 }

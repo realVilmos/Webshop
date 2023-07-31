@@ -1,4 +1,5 @@
 package hu.vilmosdev.Webshop.config;
+import com.stripe.exception.StripeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -6,6 +7,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import java.util.logging.Logger;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -23,6 +26,17 @@ public class GlobalExceptionHandler {
   public ResponseEntity<Object> handleUserException(UsernameNotFoundException  ex) {
     String errorMessage = ex.getMessage();
     return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
+  }
+  @ExceptionHandler(RuntimeException.class)
+  public ResponseEntity<Object> customException(RuntimeException ex){
+    String errorMessage = ex.getMessage();
+    return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+  @ExceptionHandler(StripeException.class)
+  public ResponseEntity<String> handleStripeException(StripeException e) {
+    Logger.getLogger(e.getMessage());
+    return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
 }

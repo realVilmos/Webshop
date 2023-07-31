@@ -1,4 +1,4 @@
-package hu.vilmosdev.Webshop.ShopItem;
+package hu.vilmosdev.Webshop.Item;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -7,7 +7,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/items")
@@ -49,8 +51,18 @@ public class ItemController {
   }
 
   @GetMapping(value = "/{id}")
-  public ResponseEntity<Item> getItemById(@PathVariable Long id) {
-    return shopItemService.findById(id);
+  public ResponseEntity<ItemResponse> getItemById(@PathVariable Long id) {
+    return shopItemService.findByIdForUser(id);
+  }
+
+  @GetMapping("/batch")
+  public ResponseEntity<List<ItemResponse>> getItemsByIds(@RequestParam String ids) {
+    List<Long> idList = Arrays.stream(ids.split(","))
+      .map(Long::valueOf)
+      .collect(Collectors.toList());
+
+    List<ItemResponse> items = shopItemService.getItemsByIdsForUser(idList);
+    return ResponseEntity.ok(items);
   }
 
 }

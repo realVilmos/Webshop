@@ -1,6 +1,6 @@
-package hu.vilmosdev.Webshop.ShopItem;
+package hu.vilmosdev.Webshop.Item;
 
-import hu.vilmosdev.Webshop.ShopItem.Reviews.ItemReview;
+import hu.vilmosdev.Webshop.Item.Reviews.ItemReview;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +27,9 @@ public class Item {
   private float weight;
   private String dimensions;
   private int quantityInStock;
-  private String vendor;
+
+  @ManyToOne
+  private Vendor vendor;
 
   private Double rating;
 

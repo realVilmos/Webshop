@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Address {
+public class BillingAddress {
   @Id
   @GeneratedValue
   private Long id;
-  private String county;
-  private String city;
-  private Integer postalCode;
-  private String street;
-  private String phoneNumber;
+  @OneToOne
+  @JoinColumn(name = "address_id")
+  private Address address;
+  private String companyName;
+  private String taxNumber;
 }
