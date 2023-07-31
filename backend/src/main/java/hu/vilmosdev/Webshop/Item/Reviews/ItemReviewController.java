@@ -1,5 +1,6 @@
 package hu.vilmosdev.Webshop.Item.Reviews;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/items/{itemId}/reviews")
+@RequiredArgsConstructor
 public class ItemReviewController {
 
   private ItemReviewService service;

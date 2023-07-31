@@ -1,5 +1,0 @@
-Feltöltött skinekhez excel sheeeeeeeet
-excelben:
-id = pusholt skinek "neve".svg
-"-" piros háttérrel = nincs ez az elem a skinen.
-https://docs.google.com/spreadsheets/d/1XWqO9IjZ22deA2gfkziDjC0fU1L0T3rxQfCgjYZa2KE/edit#gid=0
