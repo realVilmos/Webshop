@@ -47,6 +47,7 @@ public class AuthenticationService {
   }
 
   public void register(RegisterRequest request){
+    System.out.println(request);
     try{
       String randomCode = generateRandomString(64);
       var user = User.builder()

@@ -1,5 +1,7 @@
 package hu.vilmosdev.Webshop.Item;
 
+import hu.vilmosdev.Webshop.Item.Category.Category;
+import jakarta.persistence.OneToOne;
 import lombok.*;
 
 import java.time.LocalDate;

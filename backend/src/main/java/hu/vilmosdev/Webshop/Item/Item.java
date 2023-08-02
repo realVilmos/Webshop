@@ -1,5 +1,6 @@
 package hu.vilmosdev.Webshop.Item;
 
+import hu.vilmosdev.Webshop.Item.Category.Category;
 import hu.vilmosdev.Webshop.Item.Reviews.ItemReview;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,7 +22,8 @@ public class Item {
 
   private String name;
   private String description;
-  private String category;
+  @OneToOne
+  private Category category;
   private String manufacturer;
   private String imgUrl;
   private float weight;

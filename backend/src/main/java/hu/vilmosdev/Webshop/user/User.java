@@ -1,5 +1,6 @@
 package hu.vilmosdev.Webshop.user;
 
+import hu.vilmosdev.Webshop.Orders.Payment;
 import hu.vilmosdev.Webshop.token.Token;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -40,11 +41,14 @@ public class User implements UserDetails {
   @OneToMany(mappedBy = "user")
   private List<Token> tokens;
 
-  @OneToMany()
+  @OneToMany(mappedBy = "user")
   private List<Address> addresses;
 
-  @OneToMany()
+  @OneToMany(mappedBy = "user")
   private List<BillingAddress> billingAddresses;
+
+  @OneToMany(mappedBy = "user")
+  private List<Payment> payments;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

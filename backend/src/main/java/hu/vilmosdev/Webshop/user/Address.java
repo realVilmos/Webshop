@@ -15,6 +15,11 @@ public class Address {
   @Id
   @GeneratedValue
   private Long id;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id")
+  private User user;
+
   private String county;
   private String city;
   private Integer postalCode;

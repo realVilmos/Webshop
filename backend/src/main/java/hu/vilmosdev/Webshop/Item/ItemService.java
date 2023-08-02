@@ -1,4 +1,5 @@
 package hu.vilmosdev.Webshop.Item;
+import hu.vilmosdev.Webshop.Item.Category.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemService {
   private final ItemRepository itemRepository;
+  private final CategoryRepository categoryRepository;
   private final VendorRepository vendorRepository;
 
   private static final Logger logger = LoggerFactory.getLogger(ItemService.class);
@@ -43,7 +45,7 @@ public class ItemService {
 
       var shopItem = Item.builder()
         .name(request.getName())
-        .category(request.getCategory())
+        .category(categoryRepository.findByName(request.getCategory()))
         .description(request.getDescription())
         .vendor(vendorRepository.getReferenceById(request.getVendor()))
         .quantityInStock(request.getQuantityInStock())
@@ -116,7 +118,7 @@ public class ItemService {
         .name(item.getName())
         .imgUrl(item.getImgUrl())
         .quantityInStock(item.getQuantityInStock())
-        .category(item.getCategory())
+        .category(item.getCategory().getName())
         .weight(item.getWeight())
         .description(item.getDescription())
         .dimensions(item.getDimensions())
@@ -162,7 +164,7 @@ public class ItemService {
       return ItemResponse.builder()
         .id(item.getId())
         .price(item.getItemPrice())
-        .category(item.getCategory())
+        .category(item.getCategory().getName())
         .description(item.getDescription())
         .dimensions(item.getDimensions())
         .manufacturer(item.getManufacturer())

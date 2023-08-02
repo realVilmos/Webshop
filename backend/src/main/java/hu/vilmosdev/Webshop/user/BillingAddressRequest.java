@@ -1,11 +1,11 @@
 package hu.vilmosdev.Webshop.user;
+
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-public class BillingAddressResponse{
-  private Long id;
+public class BillingAddressRequest {
   private String county;
   private Integer postalCode;
   private String city;

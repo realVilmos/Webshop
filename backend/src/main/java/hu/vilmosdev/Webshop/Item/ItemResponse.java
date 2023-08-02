@@ -1,5 +1,6 @@
 package hu.vilmosdev.Webshop.Item;
 
+import hu.vilmosdev.Webshop.Item.Category.Category;
 import lombok.*;
 
 @Data

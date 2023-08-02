@@ -18,6 +18,11 @@ public class BillingAddress {
   @OneToOne
   @JoinColumn(name = "address_id")
   private Address address;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id")
+  private User user;
+
   private String companyName;
   private String taxNumber;
 }
