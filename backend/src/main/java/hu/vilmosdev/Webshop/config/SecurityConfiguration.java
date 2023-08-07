@@ -41,7 +41,7 @@ public class SecurityConfiguration {
       .csrf(AbstractHttpConfigurer::disable)
       .authorizeHttpRequests((authorizeHttpRequests) ->
         authorizeHttpRequests
-          .requestMatchers("/api/auth/**", "/api/payment/").permitAll()
+          .requestMatchers("/api/auth/**", "/api/payment/**").permitAll()
           .requestMatchers(HttpMethod.GET,"/api/items/**").permitAll()
           .requestMatchers("/api/admin/**").hasRole(Role.ADMIN.name())
           .anyRequest()
@@ -54,6 +54,7 @@ public class SecurityConfiguration {
         exceptionHandlingConfigurer.accessDeniedHandler((request, response, authException) -> {
           response.setStatus(HttpStatus.FORBIDDEN.value());
           response.getWriter().write("You do not have permission to access this resource");
+
         });
       })
       .sessionManagement((sessionManagement) ->

@@ -14,22 +14,22 @@ public class UserController {
   private final UserService userService;
 
   @GetMapping("/shipping-addresses")
-  public ResponseEntity<List<BillingAddressResponse>> getUserRelatedAdresses(){
+  public ResponseEntity<List<Address>> getUserRelatedAdresses(){
     return ResponseEntity.ok().body(userService.getUserAddresses());
   }
 
   @GetMapping("/billing-addresses")
-  public ResponseEntity<List<BillingAddressResponse>> getUserRelatedBillingAddresses(){
+  public ResponseEntity<List<BillingAddress>> getUserRelatedBillingAddresses(){
     return ResponseEntity.ok().body(userService.getUserBillingAddresses());
   }
 
   @PostMapping("/add-shipping-address")
-  public ResponseEntity<BillingAddressResponse> saveUserRelatedAdresses(@RequestBody Address address){
+  public ResponseEntity<Address> saveUserRelatedAdresses(@RequestBody Address address){
     return userService.saveUserAddress(address);
   }
 
   @PostMapping("/add-billing-address")
-  public ResponseEntity<BillingAddressResponse> addUserRelatedBillingAddress(@RequestBody BillingAddressRequest address){
+  public ResponseEntity<BillingAddress> addUserRelatedBillingAddress(@RequestBody BillingAddressRequest address){
     return userService.saveBillingAddress(address);
   }
 

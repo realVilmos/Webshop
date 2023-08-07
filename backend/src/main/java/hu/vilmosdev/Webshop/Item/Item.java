@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -25,7 +26,10 @@ public class Item {
   @OneToOne
   private Category category;
   private String manufacturer;
-  private String imgUrl;
+
+  @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private List<ItemImage> images;
+
   private float weight;
   private String dimensions;
   private int quantityInStock;
@@ -40,5 +44,13 @@ public class Item {
 
   @OneToOne(cascade = CascadeType.ALL)
   private ItemPrice itemPrice;
+
+  void addImage(ItemImage itemImage){
+    if(this.images == null){
+      this.images = new ArrayList<>();
+    }
+    this.images.add(itemImage);
+    itemImage.setItem(this);
+  }
 
 }

@@ -1,5 +1,4 @@
 package hu.vilmosdev.Webshop.user;
-import hu.vilmosdev.Webshop.auth.AuthenticationResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -21,20 +20,14 @@ public class UserService {
   private final BillingAddressRepoistory billingAddressRepository;
   private static final Logger logger = LoggerFactory.getLogger(UserService.class);
   @Transactional
-  public List<BillingAddressResponse> getUserAddresses() {
+  public List<Address> getUserAddresses() {
     try{
       Authentication auth = SecurityContextHolder.getContext().getAuthentication();
       if(auth instanceof UsernamePasswordAuthenticationToken){
         User userDetails = (User) auth.getPrincipal();
         User user = userRepository.getReferenceById(userDetails.getId());
 
-        return user.getAddresses().stream().map((address -> BillingAddressResponse.builder()
-          .county(address.getCounty())
-          .postalCode(address.getPostalCode())
-          .city(address.getCity())
-          .street(address.getStreet())
-          .phoneNumber(address.getPhoneNumber())
-          .build())).toList();
+        return user.getAddresses();
       }
       throw new Exception("Not valid authorization");
     }
@@ -45,27 +38,16 @@ public class UserService {
     }
   }
   @Transactional
-  public ResponseEntity<BillingAddressResponse> saveUserAddress(Address address){
+  public ResponseEntity<Address> saveUserAddress(Address address){
     try{
       Authentication auth = SecurityContextHolder.getContext().getAuthentication();
       if(auth instanceof UsernamePasswordAuthenticationToken) {
         User userDetails = (User) auth.getPrincipal();
         User user = userRepository.getReferenceById(userDetails.getId());
+        address.setUser(user);
         address = addressRepository.save(address);
 
-        user.getAddresses().add(address);
-        userRepository.save(user);
-
-        BillingAddressResponse billingAddressResponse = BillingAddressResponse.builder()
-          .id(address.getId())
-          .county(address.getCounty())
-          .postalCode(address.getPostalCode())
-          .city(address.getCity())
-          .street(address.getStreet())
-          .phoneNumber(address.getPhoneNumber())
-          .build();
-
-        return ResponseEntity.ok().body(billingAddressResponse);
+        return ResponseEntity.ok().body(address);
       }
       throw new Exception("Not valid authorization");
     }
@@ -76,7 +58,7 @@ public class UserService {
     }
   }
 
-  public ResponseEntity<BillingAddressResponse> saveBillingAddress(BillingAddressRequest billingAddressResponse) {
+  public ResponseEntity<BillingAddress> saveBillingAddress(BillingAddressRequest billingAddressResponse) {
     try{
       Authentication auth = SecurityContextHolder.getContext().getAuthentication();
       if(auth instanceof UsernamePasswordAuthenticationToken) {
@@ -89,33 +71,21 @@ public class UserService {
           .street(billingAddressResponse.getStreet())
           .postalCode(billingAddressResponse.getPostalCode())
           .phoneNumber(billingAddressResponse.getPhoneNumber())
+          .user(user)
           .build();
 
         address = addressRepository.save(address);
-        user.getAddresses().add(address);
 
         BillingAddress billingAddress = BillingAddress.builder()
+          .user(user)
           .address(address)
           .companyName(billingAddressResponse.getCompanyName())
           .taxNumber(billingAddressResponse.getTaxNumber())
           .build();
 
         billingAddress = billingAddressRepository.save(billingAddress);
-        user.getBillingAddresses().add(billingAddress);
 
-        userRepository.save(user);
-
-        BillingAddressResponse response = BillingAddressResponse.builder()
-          .id(billingAddress.getId())
-          .companyName(billingAddress.getCompanyName())
-          .taxNumber(billingAddress.getTaxNumber())
-          .county(address.getCounty())
-          .postalCode(address.getPostalCode())
-          .city(address.getCity())
-          .street(address.getStreet())
-          .build();
-
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.ok().body(billingAddress);
       }
       throw new Exception("Not valid authorization");
     }
@@ -126,26 +96,14 @@ public class UserService {
     }
   }
 
-  public List<BillingAddressResponse> getUserBillingAddresses() {
+  public List<BillingAddress> getUserBillingAddresses() {
     try{
       Authentication auth = SecurityContextHolder.getContext().getAuthentication();
       if(auth instanceof UsernamePasswordAuthenticationToken){
         User userDetails = (User) auth.getPrincipal();
         User user = userRepository.getReferenceById(userDetails.getId());
 
-        return user.getBillingAddresses().stream().map((billingAddress -> {
-          Address address = billingAddress.getAddress();
-          return BillingAddressResponse.builder()
-            .id(billingAddress.getId())
-            .companyName(billingAddress.getCompanyName())
-            .taxNumber(billingAddress.getTaxNumber())
-            .county(address.getCounty())
-            .postalCode(address.getPostalCode())
-            .city(address.getCity())
-            .street(address.getStreet())
-            .build();
-        })).toList();
-
+        return user.getBillingAddresses();
       }
       throw new Exception("Not valid authorization");
     }catch (Exception e) {

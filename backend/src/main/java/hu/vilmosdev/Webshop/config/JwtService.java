@@ -1,13 +1,17 @@
 package hu.vilmosdev.Webshop.config;
 
+import hu.vilmosdev.Webshop.token.RefreshToken;
 import hu.vilmosdev.Webshop.token.RefreshTokenRepository;
+import hu.vilmosdev.Webshop.token.Token;
 import hu.vilmosdev.Webshop.token.TokenRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Key;
 import java.util.Date;
@@ -27,8 +31,8 @@ public class JwtService {
   private final RefreshTokenRepository refreshTokenRepo;
   private final TokenRepository tokenRepositoryrepo;
 
-  //normális esetben ezt nem szabadna pusholni Git-re
-  private static final String SECRET_KEY = "ed4aacb7bf2c6cf85c486adf1cfb459a384a3f41003651caf0033fc2e5b4f5457546d3b10c649d490490326597e00e6fbfaa575f5f6aafed237e557b61f623c2";
+  @Value("${secret_key}")
+  private String SECRET_KEY;
   private static final long jwtExpiration = 86400000; //Egy nap
   //Ez lehet nagyon nagy, mivel egyszer használatos
   private static final long refreshExpiration = 31536000000L; //Egy év
@@ -37,14 +41,13 @@ public class JwtService {
     return extractClaim(token, Claims::getSubject);
   }
 
+  public String extractTokenType(String token) throws CustomJwtException {
+    return extractClaim(token, claims -> claims.get("token_type", String.class));
+  }
+
   public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) throws CustomJwtException {
     final Claims claims = extractAllClaims(token);
     return claimsResolver.apply(claims);
-  }
-
-  public <T> T extractCustomClaim(String token, String claimName, Class<T> targetType) throws CustomJwtException {
-    final Claims claims = extractAllClaims(token);
-    return claims.get(claimName, targetType);
   }
 
   public String generateToken(UserDetails userDetails){
@@ -87,30 +90,32 @@ public class JwtService {
   }
 
   private boolean isTokenExpired(String token) throws CustomJwtException {
-
     if(!extractExpiration(token).before(new Date())){
       return false;
     }else{
+      String tokenType = extractTokenType(token);
+      if("ACCESS_TOKEN".equals(tokenType)){
+        Token accessToken = tokenRepositoryrepo.findByToken(token).get();
+        accessToken.setExpired(true);
+        tokenRepositoryrepo.save(accessToken);
+      }else if("REFRESH_TOKEN".equals(tokenType)){
+        RefreshToken refreshToken = refreshTokenRepo.findByToken(token).get();
+        refreshToken.setExpired(true);
+        refreshTokenRepo.save(refreshToken);
+      }
       throw new CustomJwtException("Expired token");
     }
   }
 
   private boolean isTokenRevoked(String token) throws CustomJwtException {
-    String tokenType = extractCustomClaim(token, "token_type", String.class);
-    boolean isRevoked;
+    String tokenType = extractTokenType(token);
     if("ACCESS_TOKEN".equals(tokenType)){
-      isRevoked = tokenRepositoryrepo.findByToken(token).orElseThrow().isRevoked();
+      return tokenRepositoryrepo.findByToken(token).orElseThrow().isRevoked();
     } else if ("REFRESH_TOKEN".equals(tokenType)) {
-      isRevoked = refreshTokenRepo.findByToken(token).orElseThrow().isRevoked();
+      return refreshTokenRepo.findByToken(token).orElseThrow().isRevoked();
     } else{
-      isRevoked = true;
+      return true;
     }
-
-    if(isRevoked){
-      throw new CustomJwtException("Revoked token");
-    }
-
-    return false;
   }
 
   private Date extractExpiration(String token) throws CustomJwtException {
@@ -125,8 +130,6 @@ public class JwtService {
         .build()
         .parseClaimsJws(token)
         .getBody();
-    }catch(ExpiredJwtException ex){
-      throw new CustomJwtException("JWT token has expired");
     }catch(MalformedJwtException | UnsupportedJwtException | IllegalArgumentException ex){
       throw new CustomJwtException("Invalid JWT token");
     }

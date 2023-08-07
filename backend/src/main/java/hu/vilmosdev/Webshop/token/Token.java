@@ -1,11 +1,14 @@
 package hu.vilmosdev.Webshop.token;
 
+import hu.vilmosdev.Webshop.Item.Category.Category;
 import hu.vilmosdev.Webshop.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Objects;
 
 @Data
 @Builder

@@ -1,6 +1,6 @@
-package hu.vilmosdev.Webshop.user;
+package hu.vilmosdev.Webshop.token;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import hu.vilmosdev.Webshop.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,19 +12,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class BillingAddress {
+public class UnifiedToken {
   @Id
   @GeneratedValue
   private Long id;
-  @OneToOne
-  @JoinColumn(name = "address_id")
-  private Address address;
 
-  @JsonIgnore
+  @Column(unique = true)
+  private String accessToken;
+
+  @Column(unique = true)
+  private String refreshToken;
+
+  private boolean revoked;
+
+  private boolean expired;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
   private User user;
-
-  private String companyName;
-  private String taxNumber;
 }

@@ -6,8 +6,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PaymentIntentResponse {
-  private String clientSecret;
+  private String client_secret;
   private long amount;
   private String currency;
   private String status;
+  private String id;
 }

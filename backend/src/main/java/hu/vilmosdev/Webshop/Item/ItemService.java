@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -19,18 +20,15 @@ public class ItemService {
   private final ItemRepository itemRepository;
   private final CategoryRepository categoryRepository;
   private final VendorRepository vendorRepository;
+  private final ImageStorageService imageStorageService;
 
   private static final Logger logger = LoggerFactory.getLogger(ItemService.class);
-  public List<Item> getRandomItems(){
-    //To implement
-    return null;
-  }
 
   public Item getShopItemById(Long id){
     return itemRepository.getReferenceById(id);
   }
 
-  public void createShopItem(ItemCreationRequest request){
+  public Item createShopItem(ItemCreationRequest request){
     try{
       ItemPrice price = new ItemPrice();
       price.setOriginalPrice(request.getOriginalPrice());
@@ -43,20 +41,26 @@ public class ItemService {
         price.setOnSale(false);
       }
 
-      var shopItem = Item.builder()
+      Item item = Item.builder()
         .name(request.getName())
-        .category(categoryRepository.findByName(request.getCategory()))
+        .category(categoryRepository.getReferenceById(request.getCategory()))
         .description(request.getDescription())
         .vendor(vendorRepository.getReferenceById(request.getVendor()))
         .quantityInStock(request.getQuantityInStock())
-        .imgUrl(request.getImgUrl())
         .weight(request.getWeight())
         .dimensions(request.getDimensions())
         .manufacturer(request.getManufacturer())
         .itemPrice(price)
         .build();
 
-      itemRepository.save(shopItem);
+      for(String base64Images : request.getImages()){
+        String fileName = imageStorageService.store(base64Images);
+        ItemImage itemImage = new ItemImage();
+        itemImage.setImageName(fileName);
+        item.addImage(itemImage);
+      }
+
+      return itemRepository.save(item);
     }catch (Exception e) {
       logger.error("Error during creation of the item: " + e.getMessage());
       e.printStackTrace();
@@ -65,9 +69,9 @@ public class ItemService {
   }
 
 
-  public ResponseEntity<Page<ReducedItemResponse>> findByCategoryIn(List<String> categories, Pageable pageable) {
+  public ResponseEntity<Page<ReducedItemResponse>> findByCategoryIn(Long category_id, Pageable pageable) {
     try{
-      Page<Item> items = itemRepository.findByCategoryIn(categories, pageable);
+      Page<Item> items = itemRepository.findByCategoryId(category_id, pageable);
       return ResponseEntity.ok(new PageImpl<>(reduceItemProperies(items), pageable, items.getTotalElements()));
     }catch (Exception e) {
       logger.error("Error when getting items by category: " + e.getMessage());
@@ -116,7 +120,7 @@ public class ItemService {
       ItemResponse request = ItemResponse.builder()
         .price(item.getItemPrice())
         .name(item.getName())
-        .imgUrl(item.getImgUrl())
+        .imgUrl(item.getImages().stream().map((ItemImage::getImageName)).toList())
         .quantityInStock(item.getQuantityInStock())
         .category(item.getCategory().getName())
         .weight(item.getWeight())
@@ -151,7 +155,7 @@ public class ItemService {
       ReducedItemResponse rir = new ReducedItemResponse();
       rir.setName(item.getName());
       rir.setItemPrice(item.getItemPrice());
-      rir.setImgUrl(item.getImgUrl());
+      rir.setImgUrl(item.getImages().get(0).getImageName());
       rir.setRating(item.getRating());
       rir.setId(item.getId());
 
@@ -170,9 +174,15 @@ public class ItemService {
         .manufacturer(item.getManufacturer())
         .quantityInStock(item.getQuantityInStock())
         .name(item.getName())
-        .imgUrl(item.getImgUrl())
+        .imgUrl(item.getImages().stream().map((ItemImage::getImageName)).toList())
         .weight(item.getWeight())
         .build();
     }).toList();
+  }
+
+  public void addImageToItem(Long itemId, ItemImage image) {
+    Item item = itemRepository.getReferenceById(itemId);
+    item.addImage(image);
+    itemRepository.save(item);
   }
 }

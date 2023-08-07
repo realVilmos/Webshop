@@ -131,7 +131,6 @@ public class AuthenticationService {
       e.printStackTrace();
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during saving tokens: ", e);
     }
-
   }
 
   // Hard kijelentkeztetésre ha minden eszközről kiszeretne jelentkezni a felhasználó vagy mi akarjuk kiléptetni mindenhonnan
@@ -198,7 +197,9 @@ public class AuthenticationService {
           revokeRefreshAndRelatedAccessToken(refreshToken);
 
           var jwtAccessToken = jwtService.generateToken(user);
+          System.out.println("Access Token: " + jwtAccessToken);
           var jwtRefreshToken = jwtService.generateRefreshToken(user);
+          System.out.println("Refresh Token: " + jwtRefreshToken);
 
           saveTokens(user, jwtAccessToken, jwtRefreshToken);
 

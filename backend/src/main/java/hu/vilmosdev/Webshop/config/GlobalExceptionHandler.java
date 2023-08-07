@@ -3,6 +3,7 @@ import com.stripe.exception.StripeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -39,4 +40,9 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
+  @ExceptionHandler(MissingServletRequestParameterException.class)
+  public ResponseEntity<String> handleMissingParams(MissingServletRequestParameterException ex) {
+    String name = ex.getParameterName();
+    return new ResponseEntity<>("parameter '" + name + "' is missing", HttpStatus.BAD_REQUEST);
+  }
 }

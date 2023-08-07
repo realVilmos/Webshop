@@ -3,6 +3,8 @@ package hu.vilmosdev.Webshop.Item;
 import hu.vilmosdev.Webshop.Item.Category.Category;
 import lombok.*;
 
+import java.util.List;
+
 @Data
 @Builder
 @RequiredArgsConstructor
@@ -13,7 +15,7 @@ public class ItemResponse {
   private String description;
   private String category;
   private String manufacturer;
-  private String imgUrl;
+  private List<String> imgUrl;
   private float weight;
   private String dimensions;
   private int quantityInStock;

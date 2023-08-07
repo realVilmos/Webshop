@@ -4,15 +4,20 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
 import hu.vilmosdev.Webshop.Item.Item;
 import hu.vilmosdev.Webshop.Item.ItemPrice;
+import hu.vilmosdev.Webshop.Item.ItemQuantity;
 import hu.vilmosdev.Webshop.Item.ItemRepository;
 import hu.vilmosdev.Webshop.user.AddressRepository;
 import hu.vilmosdev.Webshop.user.BillingAddressRepoistory;
+import hu.vilmosdev.Webshop.user.User;
 import hu.vilmosdev.Webshop.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -47,8 +52,7 @@ public class PaymentService {
                 return price.getOriginalPrice() * chargeRequest.getItemQuantities().get(item.getId());
               }
             }else{
-              System.out.println("Hibás");
-              return 0L;
+              throw new RuntimeException("Invalid order");
             }
           }).sum();
 
@@ -61,21 +65,27 @@ public class PaymentService {
         PaymentIntent paymentIntent = PaymentIntent.create(params);
 
         PaymentIntentResponse paymentIntentResponse = PaymentIntentResponse.builder()
-          .clientSecret(paymentIntent.getClientSecret())
+          .client_secret(paymentIntent.getClientSecret())
           .amount(paymentIntent.getAmount())
           .currency(paymentIntent.getCurrency())
           .status(paymentIntent.getStatus())
+          .id(paymentIntent.getId())
           .build();
 
         Payment payment = Payment.builder()
-          .paymentType("STRIPE")
-          .billingAddress(billingAddressRepoistory.getReferenceById(chargeRequest.getBillingAddressId()))
-          .date(LocalDate.now())
-          .deliverAddress(addressRepository.getReferenceById(chargeRequest.getShippingAddressId()))
-          .totalPrice(totalAmount)
           .user(userRepository.getReferenceById(chargeRequest.getUserId()))
-          .transactionId(paymentIntent.getId())
-          .isSuccess(paymentIntent.getStatus().equals("succeeded"))
+          .billingAddress(billingAddressRepoistory.getReferenceById(chargeRequest.getBillingAddressId()))
+          .deliveryAddress(addressRepository.getReferenceById(chargeRequest.getShippingAddressId()))
+          .items(items.stream().map(item -> ItemQuantity.builder()
+            .quantity(chargeRequest.getItemQuantities().get(item.getId()))
+            .item(item)
+            .build()).toList())
+          .provider("STRIPE")
+          .providerPaymentId(paymentIntent.getId())
+          .paymentMethod("CARD")
+          .status(PaymentStatus.PENDING)
+          .currency("HUF")
+          .totalPrice(totalAmount)
           .build();
 
         paymentRepository.save(payment);
@@ -89,5 +99,39 @@ public class PaymentService {
         e.printStackTrace();
         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "General exception", e);
       }
+  }
+
+  public ReducedPaymentResponse getPaymentDetails(String intentId) {
+    try{
+      Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+      if(auth instanceof UsernamePasswordAuthenticationToken){
+        User userDetails = (User) auth.getPrincipal();
+        User user = userRepository.getReferenceById(userDetails.getId());
+
+        Payment payment = paymentRepository.findByProviderPaymentId(intentId);
+
+        if(Objects.equals(payment.getUser().getId(), user.getId())){
+          return ReducedPaymentResponse.builder()
+            .paymentReference(payment.getPaymentReference())
+            .paymentMethod(payment.getPaymentMethod())
+            .address(payment.getDeliveryAddress())
+            .billingAddress(payment.getBillingAddress())
+            .createdDate(payment.getCreatedDate())
+            .errorMessage(payment.getErrorMessage())
+            .totalPrice(payment.getTotalPrice())
+            .currency(payment.getCurrency())
+            .items(payment.getItems())
+            .build();
+        }else{
+          throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User not authorized to get other payments.");
+        }
+      }
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid user authentication");
+
+    }catch (RuntimeException e) {
+      logger.error("Error during getting user addresses: " + e.getMessage());
+      e.printStackTrace();
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during getting user addresses: ", e);
+    }
   }
 }
