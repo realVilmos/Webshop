@@ -1,0 +1,16 @@
+== Welcome to the wiki!
+Here you will mainly find the backend's endpoint documentations, and different behaviours.
+You will see example requests and the appropriate responses for each request.
+
+Different scenarios are included, e.g. making a request with invalid access token, and the response.
+You will see the endpoint url's in the top of every request block.
+The endpoint for the below request is <host>/api/auth/register and the posted data is the json below
+
+----
+POST /api/auth/register HTTP/1.1
+Content-Type: application/json
+Content-Length: 93
+Host: localhost:8080
+
+{"firstname":"John","lastname":"Doe","email":"john.doe@example.com","password":"password123"}
+----

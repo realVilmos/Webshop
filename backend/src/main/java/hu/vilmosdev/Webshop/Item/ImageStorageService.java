@@ -16,11 +16,10 @@ import java.util.UUID;
 
 @Service
 public class ImageStorageService {
-  private final String UPLOAD_DIR = "uploads/";
   @PostConstruct
   public void init() {
     try {
-      Files.createDirectories(Paths.get(UPLOAD_DIR));
+      Files.createDirectories(Paths.get("uploads/"));
     } catch (IOException e) {
       throw new RuntimeException("Could not create upload directory!");
     }
@@ -30,7 +29,7 @@ public class ImageStorageService {
       try {
         byte[] bytes = Base64.getDecoder().decode(base64Images.split(",")[1]); // Splitting to remove "data:image/png;base64,"
 
-        Path path = Paths.get("C:", "Users\\kecsk\\OneDrive\\Documents\\Web4CV\\Webshop\\backend", "uploads", UUID.randomUUID().toString() + ".png");
+        Path path = Paths.get("uploads", UUID.randomUUID() + ".png");
         System.out.println(path.toAbsolutePath());
         Files.write(path, bytes);
         return path.getFileName().toString();

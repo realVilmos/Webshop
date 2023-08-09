@@ -9,7 +9,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 @SpringBootApplication
-@ComponentScan(basePackages = "hu.vilmosdev.Webshop")
 public class WebshopApplication {
 
 	public static void main(String[] args) {

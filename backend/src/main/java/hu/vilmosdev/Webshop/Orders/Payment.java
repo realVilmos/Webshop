@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -39,7 +41,7 @@ public class Payment {
   @JoinColumn(name = "address_id", nullable = false)
   private Address deliveryAddress;
 
-  @OneToMany
+  @OneToMany(cascade = CascadeType.ALL)
   private List<ItemQuantity> items;
 
   @Column(nullable = false)

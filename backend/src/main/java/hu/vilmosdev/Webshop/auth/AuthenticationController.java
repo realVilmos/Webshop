@@ -4,7 +4,9 @@ import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.io.UnsupportedEncodingException;
@@ -17,7 +19,7 @@ public class AuthenticationController {
   private final AuthenticationService service;
 
   @PostMapping("/register")
-  public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) throws MessagingException, UnsupportedEncodingException {
+  public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
     if(service.doesUserExist(request.getEmail())){
       return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
@@ -34,8 +36,11 @@ public class AuthenticationController {
   }
 
   @GetMapping("/refresh-token")
-  public ResponseEntity<AuthenticationResponse> refreshToken(HttpServletRequest request) throws CustomJwtException {
-    return ResponseEntity.ok(service.refreshToken(request));
+  public ResponseEntity<AuthenticationResponse> refreshToken(HttpServletRequest request) throws CustomJwtException{
+    AuthenticationResponse response = service.refreshToken(request);
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    return new ResponseEntity<>(response, headers, HttpStatus.OK);
   }
 
   @GetMapping("/verify")
@@ -43,7 +48,7 @@ public class AuthenticationController {
     if (service.verify(code)) {
       return ResponseEntity.ok().body("{\"message\": \"verify_success\"}");
     } else {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("verify_fail");
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"message\": \"verify_fail\"}");
     }
   }
 }

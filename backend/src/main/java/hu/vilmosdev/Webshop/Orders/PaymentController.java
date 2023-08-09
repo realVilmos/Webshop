@@ -18,6 +18,7 @@ public class PaymentController {
 
   @GetMapping(value = "/get-payment-reference")
   public ResponseEntity<ReducedPaymentResponse> getPaymentReference(@RequestParam String intentId){
+    System.out.println(ResponseEntity.ok().body(paymentService.getPaymentDetails(intentId)));
     return ResponseEntity.ok().body(paymentService.getPaymentDetails(intentId));
   }
 }

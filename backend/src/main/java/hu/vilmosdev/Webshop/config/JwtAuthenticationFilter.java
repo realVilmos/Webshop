@@ -1,12 +1,15 @@
 package hu.vilmosdev.Webshop.config;
 
 import hu.vilmosdev.Webshop.token.TokenRepository;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.antlr.v4.runtime.misc.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,6 +28,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   private final JwtService jwtService;
   private final UserDetailsService userDetailsService;
   private final TokenRepository tokenRepository;
+  private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
   @Override
   protected void doFilterInternal(
@@ -43,6 +47,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       }
 
       jwt = authHeader.substring(7);
+      System.out.println("jwt: " + jwt);
       userEmail = jwtService.extractUsername(jwt);
 
       if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null){
@@ -58,13 +63,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
           }
           filterChain.doFilter(request, response);
       }
-    }catch (CustomJwtException e) {
+    }catch (ExpiredJwtException e){
+      logger.error(e.getMessage());
       response.setStatus(HttpStatus.UNAUTHORIZED.value());
       response.getWriter().write(e.getMessage());
     }
-    catch(RuntimeException ex){
+    catch (CustomJwtException | RuntimeException e) {
+      e.printStackTrace();
+      logger.error(e.getMessage());
       response.setStatus(HttpStatus.UNAUTHORIZED.value());
-      response.getWriter().write("User not found");
+      response.getWriter().write(e.getMessage());
     }
 
   }

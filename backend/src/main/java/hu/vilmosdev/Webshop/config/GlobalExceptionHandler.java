@@ -1,5 +1,6 @@
 package hu.vilmosdev.Webshop.config;
 import com.stripe.exception.StripeException;
+import hu.vilmosdev.Webshop.user.InvalidUserCredentialsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -44,5 +45,13 @@ public class GlobalExceptionHandler {
   public ResponseEntity<String> handleMissingParams(MissingServletRequestParameterException ex) {
     String name = ex.getParameterName();
     return new ResponseEntity<>("parameter '" + name + "' is missing", HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(InvalidUserCredentialsException.class)
+  @ResponseBody
+  @ResponseStatus(HttpStatus.UNAUTHORIZED)
+  public ResponseEntity<Object> handleInvalidCredentials(InvalidUserCredentialsException ex) {
+    String errorMessage = ex.getMessage();
+    return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
   }
 }

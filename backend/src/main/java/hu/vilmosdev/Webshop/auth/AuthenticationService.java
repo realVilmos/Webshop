@@ -5,14 +5,17 @@ import hu.vilmosdev.Webshop.token.RefreshToken;
 import hu.vilmosdev.Webshop.token.RefreshTokenRepository;
 import hu.vilmosdev.Webshop.token.Token;
 import hu.vilmosdev.Webshop.token.TokenRepository;
+import hu.vilmosdev.Webshop.user.InvalidUserCredentialsException;
 import hu.vilmosdev.Webshop.user.Role;
 import hu.vilmosdev.Webshop.user.User;
 import hu.vilmosdev.Webshop.user.UserRepository;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -25,6 +28,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantLock;
 
 @Service
 @RequiredArgsConstructor
@@ -36,16 +41,20 @@ public class AuthenticationService {
   private final PasswordEncoder passwordEncoder;
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
+  private final ConcurrentHashMap<String, ReentrantLock> userLocks = new ConcurrentHashMap<>();
 
   private final JavaMailSender mailSender;
 
   private static final Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
 
+  @Value("${angular-link}")
+  private String angularLink;
+
   public boolean doesUserExist(String email){
     var savedUser = repository.findByEmail(email);
     return savedUser.isPresent();
   }
-
+  @Transactional
   public void register(RegisterRequest request){
     System.out.println(request);
     try{
@@ -69,7 +78,7 @@ public class AuthenticationService {
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during registration: ", e);
     }
   }
-
+  @Transactional
   public AuthenticationResponse authenticate(AuthenticationRequest request) {
     try {
       authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
@@ -91,7 +100,7 @@ public class AuthenticationService {
     }catch(AuthenticationException e){
       logger.error("Invalid user credentials: " + e.getMessage());
       e.printStackTrace();
-      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Invalid user credentials");
+      throw new InvalidUserCredentialsException("Invalid user credentials");
     }
     catch (Exception e) {
       logger.error("Error during authentication: " + e.getMessage());
@@ -118,22 +127,24 @@ public class AuthenticationService {
       .build();
   }
 
+  @Transactional
   private void saveTokens(User user, String jwtAccessToken, String jwtRefreshToken){
     try{
       Token accessToken = buildAccessToken(user, jwtAccessToken);
       RefreshToken refreshToken = buildRefreshToken(user, jwtRefreshToken);
-      refreshTokenRepository.save(refreshToken);
+
       accessToken.setRelatedTo(refreshToken);
-      refreshToken.setRelatedTo(accessToken);
-      tokenRepository.save(accessToken);
+      refreshToken.setTokenEntity(accessToken);
+      refreshTokenRepository.save(refreshToken);
     }catch (Exception e) {
       logger.error("Error during saving tokens: " + e.getMessage());
       e.printStackTrace();
-      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during saving tokens: ", e);
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during saving tokens: " + e.getMessage());
     }
   }
 
   // Hard kijelentkeztetésre ha minden eszközről kiszeretne jelentkezni a felhasználó vagy mi akarjuk kiléptetni mindenhonnan
+  @Transactional
   private void revokeAllUserTokens(User user) {
     try{
       var validAccessUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
@@ -158,7 +169,7 @@ public class AuthenticationService {
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during revocation of user tokens: ", e);
     }
   }
-
+  @Transactional
   public void revokeRefreshAndRelatedAccessToken(String jwtRefreshToken){
     try{
       RefreshToken refreshToken = refreshTokenRepository.findByToken(jwtRefreshToken).orElseThrow(()-> new CustomJwtException("Token not found"));
@@ -177,29 +188,35 @@ public class AuthenticationService {
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during revoking refresh and access token: ", e);
     }
   }
-
-  public AuthenticationResponse refreshToken(HttpServletRequest request){
+  @Transactional
+  public AuthenticationResponse refreshToken(HttpServletRequest request) throws CustomJwtException{
+    String userEmail = null;
     try{
       final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
       final String refreshToken;
-      final String userEmail;
       if(authHeader == null || !authHeader.startsWith("Bearer ")){
         throw new CustomJwtException("Invalid or missing refresh token");
       }
 
       refreshToken = authHeader.substring(7);
       userEmail = jwtService.extractUsername(refreshToken);
+
+      ReentrantLock userLock = userLocks.computeIfAbsent(userEmail, k -> new ReentrantLock());
+
+      if(!userLock.tryLock()){
+        throw new CustomJwtException("Another refresh request is already in progress");
+      }
+
       if (userEmail != null){
-        var user = this.repository.findByEmail(userEmail).orElseThrow(()-> new UsernameNotFoundException("User not found"));
+        System.out.println(userEmail);
+        User user = this.repository.findByEmail(userEmail).orElseThrow(()-> new UsernameNotFoundException("User not found"));
         if(jwtService.isTokenValid(refreshToken, user)){
 
           //Invalidálni kell a beérkező refresh tokent és a hozzá tartozó Tokent
           revokeRefreshAndRelatedAccessToken(refreshToken);
 
           var jwtAccessToken = jwtService.generateToken(user);
-          System.out.println("Access Token: " + jwtAccessToken);
           var jwtRefreshToken = jwtService.generateRefreshToken(user);
-          System.out.println("Refresh Token: " + jwtRefreshToken);
 
           saveTokens(user, jwtAccessToken, jwtRefreshToken);
 
@@ -212,13 +229,27 @@ public class AuthenticationService {
             .role(user.getRole())
             .userId(user.getId())
             .build();
+        }else{
+          throw new CustomJwtException("Expired or Revoked token");
         }
+      }else{
+        throw new CustomJwtException("User is null");
       }
-      throw new CustomJwtException("Invalid: user in null in token");
-    }catch(Exception e){
+    }catch (CustomJwtException e){
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
+    catch(Exception e){
       logger.error("Error during refreshing a token: " + e.getMessage());
       e.printStackTrace();
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during revoking refresh and access token: ", e);
+    }
+    finally{
+      if(userEmail != null){
+        ReentrantLock userLock = userLocks.get(userEmail);
+        if(userLock != null && userLock.isHeldByCurrentThread()){
+          userLock.unlock();
+        }
+      }
     }
   }
 
@@ -242,7 +273,7 @@ public class AuthenticationService {
       helper.setSubject(subject);
 
       content = content.replace("[[name]]", user.getFirstname() + " " + user.getLastname());
-      String verifyURL = "http://localhost:4200" + "/verify?code=" + user.getVerificationCode();
+      String verifyURL = angularLink + "/verify?code=" + user.getVerificationCode();
 
       content = content.replace("[[URL]]", verifyURL);
 

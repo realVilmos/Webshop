@@ -1,14 +1,10 @@
 package hu.vilmosdev.Webshop.token;
-
-import hu.vilmosdev.Webshop.Item.Category.Category;
 import hu.vilmosdev.Webshop.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Objects;
 
 @Data
 @Builder
@@ -23,12 +19,11 @@ public class Token {
   @Column(unique = true)
   private String token;
 
-  @OneToOne(cascade = CascadeType.PERSIST)
-  @JoinColumn(name = "id")
+  @OneToOne(cascade = CascadeType.ALL)
+  @MapsId
   private RefreshToken relatedTo;
 
   private boolean revoked;
-
   private boolean expired;
 
   @ManyToOne(fetch = FetchType.LAZY)

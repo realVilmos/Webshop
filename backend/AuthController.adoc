@@ -1,0 +1,64 @@
+= Authentication endpoint
+
+== Register
+
+Request:
+include::target/generated-snippets/Successful user registration/http-request.adoc[]
+
+Response:
+include::target/generated-snippets/Successful user registration/http-response.adoc[]
+
+An email will be sent to the user's email address with a verification link. The user can authenticate once registered.
+
+=== Trying to register using an already used email
+
+Response:
+include::target/generated-snippets/Registration when a user already exists with the same email/http-response.adoc[]
+
+== Authentication
+
+Request:
+include::target/generated-snippets/Successful authentication/http-request.adoc[]
+
+Response:
+include::target/generated-snippets/Successful authentication/http-response.adoc[]
+include::target/generated-snippets/Successful token refresh/response-fields.adoc[]
+=== Trying to log in with invalid credentials
+Note that at the moment, this error will be thrown as well if the user is not registered.
+Response:
+include::target/generated-snippets/Failed authentication/http-response.adoc[]
+
+== Refreshing tokens
+When an access token gets invalid,
+this endpoint can be called to get new access and refresh tokens.
+
+Request:
+include::target/generated-snippets/Successful token refresh/http-request.adoc[]
+
+Response:
+include::target/generated-snippets/Successful token refresh/http-response.adoc[]
+Here we return the user details as well, for if a change has been done to any user detail,
+the user gets the updated details.
+include::target/generated-snippets/Successful token refresh/response-fields.adoc[]
+
+If a multiple requests comes to refresh in the same millisecond, to avoid producing the exact same tokens, this response comes:
+include::target/generated-snippets/refreshToken_anotherRefreshInProgress/http-response.adoc[]
+
+If a request comes without a bearer or invalid JWT token:
+
+include::target/generated-snippets/refreshToken_invalidOrMissingToken/http-response.adoc[]
+
+If the token is valid, but the extracted used is not found (can be caused by completely removing a user from the database and the user tries to access the refresh:
+include::target/generated-snippets/refreshToken_UserNotFound/http-response.adoc[]
+
+== Verification
+This endpoint will be called to verify the email address. A link with a URL containing the code
+is sent to the user, and upon visiting the link with this code, the user activates their account
+and confirming their email address.
+
+Request:
+include::target/generated-snippets/Successful verification/http-request.adoc[]
+Response:
+include::target/generated-snippets/Successful verification/http-response.adoc[]
+If the code is already activated, or doesn't exist:
+include::target/generated-snippets/Failed verification/http-response.adoc[]

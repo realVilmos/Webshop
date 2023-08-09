@@ -17,12 +17,11 @@ public class RefreshToken {
   @GeneratedValue
   private Long id;
 
-  @Column(unique = true)
   private String token;
 
-  @OneToOne
+  @OneToOne(mappedBy = "relatedTo", cascade = CascadeType.ALL)
   @JoinColumn(name = "id")
-  private Token relatedTo;
+  private Token tokenEntity;
 
   private boolean revoked;
 

@@ -75,7 +75,7 @@ public class ItemController {
 
   @GetMapping("/uploads/{filename:.+}")
   public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
-    Path path = Paths.get("C:", "Users\\kecsk\\OneDrive\\Documents\\Web4CV\\Webshop\\backend\\uploads", filename);
+    Path path = Paths.get("uploads", filename);
     System.out.println(path.toAbsolutePath());
     Resource resource = null;
     try {

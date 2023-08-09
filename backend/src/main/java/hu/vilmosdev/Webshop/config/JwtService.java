@@ -8,6 +8,8 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -30,12 +32,15 @@ public class JwtService {
 
   private final RefreshTokenRepository refreshTokenRepo;
   private final TokenRepository tokenRepositoryrepo;
+  private static final Logger logger = LoggerFactory.getLogger(JwtService.class);
 
-  @Value("${secret_key}")
+  @Value("${jwt.secret_key}")
   private String SECRET_KEY;
-  private static final long jwtExpiration = 86400000; //Egy nap
-  //Ez lehet nagyon nagy, mivel egyszer használatos
-  private static final long refreshExpiration = 31536000000L; //Egy év
+
+  @Value("${jwt.access_expiration}")
+  private long ACCESS_TOKEN_EXPERATION;
+  @Value("${jwt.refresh_expiration}")
+  private long REFRESH_TOKEN_EXPERATION;
 
   public String extractUsername(String token) throws CustomJwtException {
     return extractClaim(token, Claims::getSubject);
@@ -60,13 +65,13 @@ public class JwtService {
     Map<String, Object> extraClaims,
     UserDetails userDetails
   ){
-    return buildToken(extraClaims, userDetails, jwtExpiration);
+    return buildToken(extraClaims, userDetails, ACCESS_TOKEN_EXPERATION);
   }
 
   public String generateRefreshToken(UserDetails userDetails){
     Map<String, Object> claims = new HashMap<>();
     claims.put("token_type", TokenType.REFRESH_TOKEN);
-    return buildToken(claims, userDetails, refreshExpiration);
+    return buildToken(claims, userDetails, REFRESH_TOKEN_EXPERATION);
   }
 
   public String buildToken(
@@ -130,7 +135,12 @@ public class JwtService {
         .build()
         .parseClaimsJws(token)
         .getBody();
-    }catch(MalformedJwtException | UnsupportedJwtException | IllegalArgumentException ex){
+    }catch(ExpiredJwtException e){
+      throw new CustomJwtException("Expired token");
+    }
+    catch(MalformedJwtException | UnsupportedJwtException | IllegalArgumentException ex){
+      logger.error(ex.getMessage());
+      ex.printStackTrace();
       throw new CustomJwtException("Invalid JWT token");
     }
 
