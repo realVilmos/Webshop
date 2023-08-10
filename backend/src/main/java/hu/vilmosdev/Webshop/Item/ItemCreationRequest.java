@@ -1,9 +1,7 @@
 package hu.vilmosdev.Webshop.Item;
 
-import hu.vilmosdev.Webshop.Item.Category.Category;
-import jakarta.persistence.OneToOne;
-import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
+import lombok.Builder;
+import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.List;

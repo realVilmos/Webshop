@@ -1,7 +1,9 @@
 package hu.vilmosdev.Webshop.Item;
 
-import hu.vilmosdev.Webshop.Item.Category.Category;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 

@@ -1,4 +1,5 @@
 package hu.vilmosdev.Webshop.auth;
+
 import hu.vilmosdev.Webshop.config.CustomJwtException;
 import hu.vilmosdev.Webshop.config.JwtService;
 import hu.vilmosdev.Webshop.token.RefreshToken;
@@ -27,6 +28,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
@@ -128,7 +130,7 @@ public class AuthenticationService {
   }
 
   @Transactional
-  private void saveTokens(User user, String jwtAccessToken, String jwtRefreshToken){
+  public void saveTokens(User user, String jwtAccessToken, String jwtRefreshToken){
     try{
       Token accessToken = buildAccessToken(user, jwtAccessToken);
       RefreshToken refreshToken = buildRefreshToken(user, jwtRefreshToken);

@@ -1,6 +1,5 @@
 package hu.vilmosdev.Webshop.Item;
 
-import hu.vilmosdev.Webshop.Orders.Payment;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

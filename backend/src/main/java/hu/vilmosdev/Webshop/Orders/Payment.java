@@ -1,6 +1,5 @@
 package hu.vilmosdev.Webshop.Orders;
 
-import hu.vilmosdev.Webshop.Item.Item;
 import hu.vilmosdev.Webshop.Item.ItemQuantity;
 import hu.vilmosdev.Webshop.user.Address;
 import hu.vilmosdev.Webshop.user.BillingAddress;
@@ -10,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Cascade;
 
 import java.time.LocalDateTime;
 import java.util.List;

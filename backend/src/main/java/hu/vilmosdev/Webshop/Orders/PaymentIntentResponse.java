@@ -1,5 +1,9 @@
 package hu.vilmosdev.Webshop.Orders;
-import lombok.*;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder

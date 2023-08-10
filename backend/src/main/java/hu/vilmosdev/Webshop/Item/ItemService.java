@@ -1,4 +1,5 @@
 package hu.vilmosdev.Webshop.Item;
+
 import hu.vilmosdev.Webshop.Item.Category.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -9,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -61,7 +61,8 @@ public class ItemService {
       }
 
       return itemRepository.save(item);
-    }catch (Exception e) {
+
+    }catch (RuntimeException e) {
       logger.error("Error during creation of the item: " + e.getMessage());
       e.printStackTrace();
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during creation of the item: ", e);
@@ -73,7 +74,7 @@ public class ItemService {
     try{
       Page<Item> items = itemRepository.findByCategoryId(category_id, pageable);
       return ResponseEntity.ok(new PageImpl<>(reduceItemProperies(items), pageable, items.getTotalElements()));
-    }catch (Exception e) {
+    }catch (RuntimeException e) {
       logger.error("Error when getting items by category: " + e.getMessage());
       e.printStackTrace();
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error when getting items by category: ", e);
@@ -84,7 +85,7 @@ public class ItemService {
     try{
       Page<Item> items = itemRepository.findByVendorIn(vendors, pageable);
       return ResponseEntity.ok(new PageImpl<>(reduceItemProperies(items), pageable, items.getTotalElements()));
-    }catch (Exception e) {
+    }catch (RuntimeException e) {
       logger.error("Error when getting items by vendor: " + e.getMessage());
       e.printStackTrace();
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error when getting items by vendor: ", e);
@@ -95,7 +96,7 @@ public class ItemService {
     try{
       Page<Item> items = itemRepository.findByCategoryInAndVendorIn(categories, vendors, pageable);
       return ResponseEntity.ok(new PageImpl<>(reduceItemProperies(items), pageable, items.getTotalElements()));
-    }catch (Exception e) {
+    }catch (RuntimeException e) {
       logger.error("Error when getting items by vendor and category: " + e.getMessage());
       e.printStackTrace();
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error when getting items by vendor and category: ", e);
@@ -106,7 +107,7 @@ public class ItemService {
     try{
       Page<Item> items = itemRepository.findRandom(pageable);
       return ResponseEntity.ok(new PageImpl<>(reduceItemProperies(items), pageable, items.getTotalElements()));
-    }catch (Exception e) {
+    }catch (RuntimeException e) {
       logger.error("Error when getting random items: " + e.getMessage());
       e.printStackTrace();
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error when getting random items: ", e);
@@ -132,7 +133,7 @@ public class ItemService {
 
       return ResponseEntity.ok(request);
     }
-    catch (Exception e) {
+    catch (RuntimeException e) {
       logger.error("Error when getting item by id: " + e.getMessage());
       e.printStackTrace();
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error when getting item by id: ", e);
@@ -141,7 +142,7 @@ public class ItemService {
 
   public List<ItemResponse> getItemsByIdsForUser(List<Long> ids){
     try{}
-    catch (Exception e) {
+    catch (RuntimeException e) {
       logger.error("Error when getting items by ids: " + e.getMessage());
       e.printStackTrace();
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error when getting items by ids: ", e);

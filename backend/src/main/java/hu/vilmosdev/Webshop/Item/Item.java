@@ -37,7 +37,7 @@ public class Item {
   @ManyToOne
   private Vendor vendor;
 
-  private Double rating;
+  private double rating;
 
   @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
   private List<ItemReview> reviews;

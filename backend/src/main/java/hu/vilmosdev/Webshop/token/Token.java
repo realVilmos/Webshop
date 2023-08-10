@@ -16,7 +16,7 @@ public class Token {
   @GeneratedValue
   private Long id;
 
-  @Column(unique = true)
+  @Column(unique = true, columnDefinition="text")
   private String token;
 
   @OneToOne(cascade = CascadeType.ALL)

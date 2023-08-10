@@ -1,5 +1,6 @@
 package hu.vilmosdev.Webshop.user;
-import jakarta.persistence.*;
+
+import jakarta.persistence.OneToMany;
 import lombok.Builder;
 import lombok.Data;
 

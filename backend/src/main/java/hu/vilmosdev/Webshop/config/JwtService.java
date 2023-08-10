@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Key;
 import java.util.Date;
@@ -83,8 +82,8 @@ public class JwtService {
       .builder()
       .setClaims(extraClaims)
       .setSubject(userDetails.getUsername())
-      .setIssuedAt(new Date(System.currentTimeMillis()))
-      .setExpiration(new Date(System.currentTimeMillis() + expiration))
+      .setIssuedAt(new Date(System.nanoTime()))
+      .setExpiration(new Date(System.nanoTime() + expiration*1000000))
       .signWith(getSignInKey(), SignatureAlgorithm.HS512)
       .compact();
   }

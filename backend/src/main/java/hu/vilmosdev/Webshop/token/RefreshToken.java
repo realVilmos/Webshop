@@ -17,6 +17,7 @@ public class RefreshToken {
   @GeneratedValue
   private Long id;
 
+  @Column(unique = true, columnDefinition="text")
   private String token;
 
   @OneToOne(mappedBy = "relatedTo", cascade = CascadeType.ALL)

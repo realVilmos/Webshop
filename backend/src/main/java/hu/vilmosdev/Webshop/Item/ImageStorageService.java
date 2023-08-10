@@ -2,16 +2,12 @@ package hu.vilmosdev.Webshop.Item;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -25,9 +21,14 @@ public class ImageStorageService {
     }
   }
 
-  public String store(String base64Images) {
+  public String store(String base64Image) {
       try {
-        byte[] bytes = Base64.getDecoder().decode(base64Images.split(",")[1]); // Splitting to remove "data:image/png;base64,"
+        String[] image = base64Image.split(",");
+        if(image.length == 1){
+          return "Invalid image format";
+        }
+
+        byte[] bytes = Base64.getDecoder().decode(image[1]); // Splitting to remove "data:image/png;base64,"
 
         Path path = Paths.get("uploads", UUID.randomUUID() + ".png");
         System.out.println(path.toAbsolutePath());

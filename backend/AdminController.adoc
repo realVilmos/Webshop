@@ -1,0 +1,50 @@
+= Admin endpoint
+
+As the name suggests, this endpoint is only for users with admin rights. Therefore to be able to make requests to the endpoint, you need to have a valid jwt token associated to an admin user.
+
+The endpoint will throw 401 Unauthorized if a token is not provided with the request:
+include::target/generated-snippets/Admin/Non-authenticated user trying to access resource/http-request.adoc[]
+As you can see there is no Authorization header containing a bearer token, so the response is a 401 Unauthorized:
+include::target/generated-snippets/Admin/Non-authenticated user trying to access resource/http-response.adoc[]
+
+If the user is authenticated (having a valid bearer jwt token in the Authorization header) but not an admin:
+
+Request:
+include::target/generated-snippets/Admin/Non-admin user trying to create a vendor/http-request.adoc[]
+
+Response:
+include::target/generated-snippets/Admin/Non-admin user trying to create a vendor/http-response.adoc[]
+
+Here is a response if the jwt token bearer is an admin:
+include::target/generated-snippets/Admin/Admin trying to create a vendor/http-response.adoc[]
+
+== Vendor creation
+
+Request:
+include::target/generated-snippets/Admin/Admin trying to create a vendor/http-request.adoc[]
+
+Required fields for request:
+include::target/generated-snippets/Admin/Admin trying to create a vendor/request-fields.adoc[]
+
+Response:
+include::target/generated-snippets/Admin/Admin trying to create a vendor/http-response.adoc[]
+
+== Category creation
+
+Request:
+include::target/generated-snippets/Admin/Admin trying to create a category/http-request.adoc[]
+
+Required fields for request:
+include::target/generated-snippets/Admin/Admin trying to create a category/request-fields.adoc[]
+
+Response:
+include::target/generated-snippets/Admin/Admin trying to create a category/http-response.adoc[]
+
+== Creating an Item
+Item creation requires an existing Vendor and a Category. We are refering to them by their IDs. Here is the required request fields:
+
+include::target/generated-snippets/Admin/Admin trying to create an item/request-fields.adoc[]
+
+include::target/generated-snippets/Admin/Admin trying to create an item/http-request.adoc[]
+
+include::target/generated-snippets/Admin/Admin trying to create an item/http-response.adoc[]
