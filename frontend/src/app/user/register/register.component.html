@@ -1,0 +1,24 @@
+<div *ngIf="!isRegistered.value">
+    <form *ngIf="registerForm" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div>
+            <label for="email">Email:</label>
+            <input id="email" type="text" formControlName="email">
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input id="password" type="text" formControlName="password">
+        </div>
+        <div>
+            <label for="firstname">First name:</label>
+            <input id="firstname" type="text" formControlName="firstname">
+        </div>
+        <div>
+            <label for="lastname">Last name:</label>
+            <input id="lastname" type="text" formControlName="lastname">
+        </div>
+        <button type="submit">Register</button>
+    </form>
+</div>
+<div *ngIf="isRegistered.value">
+    Kérlek erősítsd meg az email címed
+</div>

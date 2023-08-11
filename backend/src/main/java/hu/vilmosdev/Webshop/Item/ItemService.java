@@ -70,9 +70,9 @@ public class ItemService {
   }
 
 
-  public ResponseEntity<Page<ReducedItemResponse>> findByCategoryIn(Long category_id, Pageable pageable) {
+  public ResponseEntity<Page<ReducedItemResponse>> findByCategoryIn(List<Long> categoryIds, Pageable pageable) {
     try{
-      Page<Item> items = itemRepository.findByCategoryId(category_id, pageable);
+      Page<Item> items = itemRepository.findByCategoryIdIn(categoryIds, pageable);
       return ResponseEntity.ok(new PageImpl<>(reduceItemProperies(items), pageable, items.getTotalElements()));
     }catch (RuntimeException e) {
       logger.error("Error when getting items by category: " + e.getMessage());
@@ -81,9 +81,9 @@ public class ItemService {
     }
   }
 
-  public ResponseEntity<Page<ReducedItemResponse>> findByVendorIn(List<String> vendors, Pageable pageable) {
+  public ResponseEntity<Page<ReducedItemResponse>> findByVendorIn(List<Long> vendors, Pageable pageable) {
     try{
-      Page<Item> items = itemRepository.findByVendorIn(vendors, pageable);
+      Page<Item> items = itemRepository.findByVendorIdIn(vendors, pageable);
       return ResponseEntity.ok(new PageImpl<>(reduceItemProperies(items), pageable, items.getTotalElements()));
     }catch (RuntimeException e) {
       logger.error("Error when getting items by vendor: " + e.getMessage());
@@ -92,9 +92,9 @@ public class ItemService {
     }
   }
 
-  public ResponseEntity<Page<ReducedItemResponse>> findByCategoryInAndVendorIn(List<String> categories, List<String> vendors, Pageable pageable) {
+  public ResponseEntity<Page<ReducedItemResponse>> findByCategoryInAndVendorIn(List<Long> categoryIds, List<Long> vendorIds, Pageable pageable) {
     try{
-      Page<Item> items = itemRepository.findByCategoryInAndVendorIn(categories, vendors, pageable);
+      Page<Item> items = itemRepository.findByCategoryInAndVendorIn(categoryIds, vendorIds, pageable);
       return ResponseEntity.ok(new PageImpl<>(reduceItemProperies(items), pageable, items.getTotalElements()));
     }catch (RuntimeException e) {
       logger.error("Error when getting items by vendor and category: " + e.getMessage());

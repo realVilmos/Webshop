@@ -1,0 +1,69 @@
+<div *ngIf="item">
+    <div class="card-wrapper mat-elevation-z8">
+        <div class="card">
+            <div class="product-imgs">
+                <div class="img-display">
+                    <div class="img-showcase">
+                        <img [src]="apiUrl + '/api/items/uploads/' + showcaseImg">
+                    </div>
+                </div>
+                <div class="img-select">
+                    <div class="img-item" *ngFor="let img of item.imgUrl" (mouseenter)="setShowcaseImage(img)">
+                        <img [src]="apiUrl + '/api/items/uploads/' + img">
+                    </div>
+                </div>
+            </div>
+            <div class="product-content">
+                <h2 class="product-title">{{item.name}}</h2>
+                <div class="product-rating">
+                    <mat-icon>star_border</mat-icon>
+                    <mat-icon>star_border</mat-icon>
+                    <mat-icon>star_border</mat-icon>
+                    <mat-icon>star_border</mat-icon>
+                    <mat-icon>star_border</mat-icon>
+                    <span>Még nem értékelt</span>
+                </div>
+                <div class="product-price">
+                    <div *ngIf="item.price.onSale; else notOnSale">
+                        <p class="last-price">Régi ár: <span>{{cartService.FormatPrice(item.price.originalPrice)}} Ft</span></p>
+                        <p class="new-price">Új ár: <span>{{cartService.FormatPrice(item.price.salePrice)}} Ft</span></p>
+                    </div>
+                    <ng-template #notOnSale>
+                        <p class="price">Ár: <span>{{item.price.originalPrice}}</span></p>
+                    </ng-template>
+                </div>
+                <div class="action-buttons">
+                    <button class="add-to-card" mat-raised-button (click)="addToCart()">
+                        <mat-icon>add_shopping_cart</mat-icon>
+                        <span>Hozzáadás a kosárhoz</span>
+                    </button>
+                    <div class="spacer"></div>
+                    <button class="to-cart" mat-raised-button color="primary" [routerLink]="['/cart']">
+                        <span>Ugrás a kosárhoz</span>
+                    </button>
+                </div>
+                <div class="product-detail">
+                    <h2>Erről a termékről: </h2>
+                    <p>{{item.description}}</p>
+                    <p>További részletek: </p>
+                    <div class="table-container">
+                        <table mat-table [dataSource]="dataSource" class="mat-elevation-z1">
+                            <ng-container matColumnDef="attribute">
+                                <th mat-header-cell *matHeaderCellDef>Tulajdonság</th>
+                                <td mat-cell *matCellDef="let element" class="row"> {{element.attribute}} </td>
+                            </ng-container>
+                            
+                            <ng-container matColumnDef="value">
+                                <th mat-header-cell *matHeaderCellDef>Érték</th>
+                                <td mat-cell *matCellDef="let element" class="row"> {{element.value}} </td>
+                            </ng-container>
+                            
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

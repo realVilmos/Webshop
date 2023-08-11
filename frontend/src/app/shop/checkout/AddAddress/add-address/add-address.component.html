@@ -1,0 +1,29 @@
+<form [formGroup]="shippingAddressForm">
+    <mat-dialog-content>
+        <h2>Szállítási cím hozzáadása</h2>
+        <mat-form-field appearance="fill">
+            <mat-label>Megye</mat-label>
+            <input matInput formControlName="county">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Irányítószám</mat-label>
+            <input matInput formControlName="postalCode">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Város</mat-label>
+            <input matInput formControlName="city">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Utca</mat-label>
+            <input matInput formControlName="street">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Telefonszám</mat-label>
+            <input matInput formControlName="phoneNumber">
+        </mat-form-field> 
+        <mat-dialog-actions>
+            <button mat-button (click)="onNoClick()">Cancel</button>
+            <button mat-button (click)="onYesClick()">Save</button>
+        </mat-dialog-actions>
+    </mat-dialog-content>
+</form>

@@ -1,0 +1,29 @@
+<div class="container">
+    <mat-grid-list cols="4" rowHeight="1:1.2">
+        <mat-grid-tile *ngFor="let item of items">
+            <mat-card [routerLink]="['/item', item.id]" class="item-cards">
+                <div class="image-container">
+                    <img mat-card-image [src]="apiUrl + '/api/items/uploads/' + item.imgUrl">
+                </div>
+                <div class="content">
+                    <p class="title">{{item.name}}</p>
+                    <div *ngIf="!item.itemPrice.onSale"><span class="price">Ár: {{cartService.FormatPrice(item.itemPrice.originalPrice)}} Ft</span></div>
+                    <div *ngIf="item.itemPrice.onSale">
+                        <span class="price">
+                            Akció:
+                            <span class="last-price">
+                                {{cartService.FormatPrice(item.itemPrice.originalPrice)}} Ft
+                            </span>
+                            <span class="new-price">
+                                {{cartService.FormatPrice(item.itemPrice.salePrice)}} Ft
+                            </span>
+                        </span>
+                    </div>
+                    <mat-card-actions>
+                        <button mat-raised-button color="primary" (click)="cartService.addReducedItemToCart(item); $event.stopPropagation()">Hozzáadás a kosárhoz</button>
+                    </mat-card-actions>
+                </div>
+            </mat-card>
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>

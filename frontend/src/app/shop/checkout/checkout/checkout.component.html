@@ -1,0 +1,89 @@
+<div class="container">
+    <div *ngIf="!isLoggedIn">
+        Kérlek jelentkezz be <a routerLink="/login">itt</a>. Ha nincs fiókod, kérlek regisztrálj <a routerLink="/register">itt</a>
+    </div>
+    
+    <div *ngIf="isLoggedIn">
+        <mat-horizontal-stepper linear>
+            <mat-step label="Számlázási cím kiválasztása" [completed]="selectedBillingAddress !== undefined">
+                <h3>Számlázási címek:</h3>
+                <div class="card-container">
+                    <mat-card color="primary"
+                        *ngFor="let billingAddress of billingAddresses"
+                        [ngClass]="{'selected': selectedBillingAddress === billingAddress}"
+                        (click)="selectBillingAddress(billingAddress)" class="custom-mat-card">
+                        <mat-card-header>
+                            <mat-card-title>{{getFullName()}}</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <p>{{billingAddress.address.postalCode + " " + billingAddress.address.city + ", " + billingAddress.address.street}}</p>
+                            <p *ngIf="billingAddress.companyName">{{billingAddress.companyName}}</p>
+                        </mat-card-content>
+                    </mat-card>
+                    <mat-card class="custom-mat-card" (click)="openRegisterBillingAddressModal()">
+                        <mat-card-content>
+                            <h2>+ Számlázási cím hozzáadása</h2>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+                <div>
+                    <button mat-raised-button color="primary" matStepperNext [disabled]="selectedBillingAddress == undefined">Következő</button>   
+                </div>
+            </mat-step>
+            <mat-step label="Szállítási cím kiválasztása">
+                <h3>Szállítási címek:</h3>
+                <div *ngIf="shippingAddresses.length > 0" class="card-container">
+                    <mat-card 
+                        *ngFor="let address of shippingAddresses"
+                        [ngClass]="{'selected': selectedShippingAddress === address}"
+                        (click)="selectShippingAddress(address)" class="custom-mat-card">
+                        <mat-card-header>
+                            <mat-card-title>{{getFullName()}}</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <p>{{address.postalCode + " " + address.city + ", " + address.street}}</p>
+                        </mat-card-content>
+                    </mat-card>
+                    <mat-card class="custom-mat-card" (click)="openRegisterAddressModal()">
+                        <mat-card-content>
+                            <h2>+ Szállítási cím hozzáadása</h2>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+                <div>
+                    <button mat-raised-button color="primary" matStepperNext [disabled]="selectedBillingAddress == undefined">Következő</button>   
+                </div>
+            </mat-step>
+            <mat-step label="Rendelés áttekintése">
+                    <div class="items">
+                        <mat-card class="item" *ngFor="let item of items">
+                            <mat-card-content style="display: flex;">
+                                <div class="card-image">
+                                    <img [src]="apiUrl + '/api/items/uploads/' + item.imgUrl[0]" height="125px">
+                                </div> 
+                                <div class="card-details">
+                                    <h4>{{item.name}}</h4>
+                                    <p>Mennyiség: {{itemQuantities.get(item.id)}}</p>
+                                    <p>Ár: {{item.price.onSale ? item.price.salePrice * getItemQuantity(item.id) : item.price.originalPrice * getItemQuantity(item.id)}}</p>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                        Összesített ár: {{summarizeCost()}}
+                        <button mat-raised-button color="primary" matStepperPrevious>Vissza</button>
+                        <button mat-raised-button color="primary" matStepperNext>Következő</button>
+                    </div>
+            </mat-step>
+            <mat-step label="Rendelés leadása">
+                <p>Tesztelés céljából használható kártya: 4242 4242 4242 4242 (Stripe teszt kártyája, mindig működni fog)</p>
+                <p>Csak a kártyaszám a lényeg és a lejárati a teszt kártya esetében</p>
+                <div id="credit-card-element">
+                    <div id="card-number-element"></div>
+                    <div id="card-expiry-element"></div>
+                    <div id="card-cvc-element"></div>
+                </div>
+                <div id="card-errors" role="alert"></div>
+                <button mat-button matStepperPrevious>Vissza</button> <button mat-raised-button color="primary" (click)="checkout()">Fizetés Stripe-al</button>
+            </mat-step>
+        </mat-horizontal-stepper>
+    </div>
+</div>

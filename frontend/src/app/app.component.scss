@@ -1,0 +1,90 @@
+header{
+    width: 100vw;
+    height: 50px;
+    background-color: #e2e2e2;
+}
+
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+.badge {
+    position: absolute;
+    right: 7px;
+    bottom: 7px;
+    background-color: #ff4081;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 5px;
+    font-size: 12px;
+    line-height: 1;
+}
+
+mat-toolbar a{
+    text-decoration: none;
+    color: white;
+}
+
+.cart-card{
+    color: #333;
+    max-width: 375px;
+}
+
+::ng-deep .mat-mdc-menu-panel{
+    max-width: 400px !important;
+}
+
+.container{
+    padding: 0 10px 0 10px;
+}
+
+.header{
+    display: flex;
+}
+
+.cards{
+    padding: 5px 0px 5px 0px;
+}
+
+.bottom{
+    display: flex;
+    padding-top: 10px;
+}
+
+.bottom span p{
+    padding-top: 7px;
+}
+
+.card-details{
+    padding-left: 10px;
+}
+
+.card-details .bottom-row{
+    font-size: 14px;
+}
+
+.bottom-row .quantities{
+    display: inline-flex;
+    align-items: center;
+}
+
+.bottom-row .price{
+    text-align: right;
+}
+
+.remove-item{
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.remove-item .mdc-fab{
+    transform: scale(1);
+    background-color: #f3f3f3;
+    top: 5px;
+    left: 5px;
+}
+
+.bottom-row .quantities .mdc-icon-button{
+    transform: scale(0.5);
+}

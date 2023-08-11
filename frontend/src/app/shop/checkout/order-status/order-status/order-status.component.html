@@ -1,0 +1,11 @@
+<p>order-status works!</p>
+<div *ngIf="status == 'fail'">
+    <p>Sikertelen fizetés</p>
+    <p>{{errorMessage}}</p>
+</div>
+<div *ngIf="status == 'success'">
+    <p>Sikeres fizetés</p>
+</div>
+<div *ngIf="payment">
+    {{payment | json}}
+</div>

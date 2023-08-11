@@ -1,0 +1,7 @@
+<div *ngFor="let item of items">
+    {{item | json}}
+    Quantity: {{itemQuantities.get(item.id)}}
+</div>
+<div>
+    <button mat-raised-button [routerLink]="['/checkout']">Fizetéshez</button>
+</div>

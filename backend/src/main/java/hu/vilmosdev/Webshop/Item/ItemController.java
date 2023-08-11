@@ -32,29 +32,13 @@ public class ItemController {
     return itemService.findRandom(pageable);
   }
 
-  @GetMapping(params = {"page", "size", "category"})
-  public ResponseEntity<Page<ReducedItemResponse>> getItemsByCategory(@RequestParam("page") int page,
-                                       @RequestParam("size") int size,
-                                       @RequestParam("category") Long category_id) {
-    Pageable pageable = PageRequest.of(page, size);
-    return itemService.findByCategoryIn(category_id, pageable);
-  }
-
-  @GetMapping(params = {"page", "size", "vendors"})
-  public ResponseEntity<Page<ReducedItemResponse>> getItemsByVendor(@RequestParam("page") int page,
-                                     @RequestParam("size") int size,
-                                     @RequestParam("vendors") List<String> vendors) {
-    Pageable pageable = PageRequest.of(page, size);
-    return itemService.findByVendorIn(vendors, pageable);
-  }
-
-  @GetMapping(params = {"page", "size", "category", "vendors"})
+  @GetMapping(params = {"page", "size", "category", "vendor"})
   public ResponseEntity<Page<ReducedItemResponse>> getItemsByCategoryAndVendor(@RequestParam("page") int page,
                                                 @RequestParam("size") int size,
-                                                @RequestParam("category") List<String> categories,
-                                                @RequestParam("vendors") List<String> vendors) {
+                                                @RequestParam("category") List<Long> categoryIds,
+                                                @RequestParam("vendor") List<Long> vendorIds) {
     Pageable pageable = PageRequest.of(page, size);
-    return itemService.findByCategoryInAndVendorIn(categories, vendors, pageable);
+    return itemService.findByCategoryInAndVendorIn(categoryIds, vendorIds, pageable);
   }
 
   @GetMapping(value = "/{id}")
@@ -74,8 +58,8 @@ public class ItemController {
 
   @GetMapping("/uploads/{filename:.+}")
   public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
-    Path path = Paths.get("uploads", filename);
-    System.out.println(path.toAbsolutePath());
+    Path path = Paths.get("./uploads", filename);
+    (path.toAbsolutePath());
     Resource resource = null;
     try {
       resource = new UrlResource(path.toUri());

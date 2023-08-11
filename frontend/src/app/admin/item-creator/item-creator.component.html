@@ -1,0 +1,75 @@
+<h2>Create Item</h2>
+<form *ngIf="itemForm" [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="name">Name</label>
+      <input id="name" type="text" formControlName="name">
+    </div>
+    <div>
+      <label for="description">Description</label>
+      <input id="description" type="text" formControlName="description">
+    </div>
+    <div>
+      <label for="category">category</label>
+      <input id="category" type="text" formControlName="category">
+    </div>
+    <div>
+      <label for="vendor">vendor id</label>
+      <input id="vendor" type="text" formControlName="vendor">
+    </div>
+    <div>
+      <label for="quantityInStock">quantityInStock</label>
+      <input id="quantityInStock" type="text" formControlName="quantityInStock">
+    </div>
+    <div>
+      <label for="weight">weight</label>
+      <input id="weight" type="text" formControlName="weight">
+    </div>
+    <div>
+      <label for="dimensions">dimensions</label>
+      <input id="dimensions" type="text" formControlName="dimensions">
+    </div>
+    <div>
+      <label for="manufacturer">manufacturer</label>
+      <input id="manufacturer" type="text" formControlName="manufacturer">
+    </div>
+    <div>
+      <label for="originalPrice">originalPrice</label>
+      <input id="originalPrice" type="text" formControlName="originalPrice">
+    </div>
+    <div>
+      <label for="isOnSale">isOnSale</label>
+      <input id="isOnSale" type="checkbox" formControlName="isOnSale">
+    </div>
+
+    <div class="image-upload-container">
+
+      <!-- File Input for Multiple Images -->
+      <div class="file-selector">
+          <input type="file" (change)="onFileSelected($event)" multiple>
+      </div>
+  
+      <!-- Display Selected Filenames -->
+      <div class="selected-files">
+          <h3>Selected Files:</h3>
+          <ul>
+              <li *ngFor="let file of selectedFiles">{{ file.name }}</li>
+          </ul>
+      </div>
+  
+  </div>
+  
+
+    <div *ngIf="itemForm.get('isOnSale')?.value">
+      <div>
+        <label for="salePrice">salePrice</label>
+        <input id="salePrice" type="text" formControlName="salePrice">
+      </div>
+      <div>
+        <label for="saleEndDate">saleEndDate</label>
+        <input id="saleEndDate" type="date" formControlName="saleEndDate">
+      </div>
+    </div>
+
+    <button type="submit">Submit</button>
+  </form>
+  

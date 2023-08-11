@@ -46,7 +46,7 @@ public class CategoryService {
   public Category findById(Long id) {
     try{
       Category category = categoryRepository.findById(id).get();
-      System.out.println(category);
+      (category);
       return category;
     }catch (Exception e) {
       logger.error("Error finding the Category: " + e.getMessage());

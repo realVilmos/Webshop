@@ -1,0 +1,8 @@
+<div>
+    <div *ngIf="isSuccessful.value else notSuccessful">
+        <p>Sikeres jóváhagyás.</p>
+    </div>
+    <ng-template #notSuccessful>
+        <p>Sikertelen jóváhagyás.</p>
+    </ng-template>
+</div>

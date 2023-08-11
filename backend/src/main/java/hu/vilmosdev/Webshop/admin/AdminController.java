@@ -36,7 +36,7 @@ public class AdminController {
 
   @PostMapping("create-category")
   public ResponseEntity<Category> createCategory(@RequestBody CategoryCreationRequest request) {
-    System.out.println(request);
+    (request);
     Category newCategory = categoryService.createCategory(request);
     return ResponseEntity.ok().body(newCategory);
   }

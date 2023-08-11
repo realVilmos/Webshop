@@ -1,0 +1,25 @@
+<!--
+<div class="main-container">
+    <mat-list>
+        <mat-list-item *ngFor="let category of categories" (mouseover)="hoveredCategory = category" [routerLink]="['/items']" [queryParams]="{category: category.id}">{{category.name}}</mat-list-item>
+    </mat-list>
+    <div class="subcategory-tooltip" *ngIf="hoveredCategory">
+        <ng-container *ngTemplateOutlet="recursiveList; context: {$implicit: hoveredCategory?.subCategories}"></ng-container>
+    
+        <ng-template #recursiveList let-list>
+            <ul>
+            <li *ngFor="let category of list">
+                {{ category.name }}
+                <ng-container *ngIf="category.subCategories && category.subCategories.length > 0">
+                <ng-container *ngTemplateOutlet="recursiveList; context: {$implicit: category.subCategories}"></ng-container>
+                </ng-container>
+            </li>
+            </ul>
+        </ng-template>
+    </div>    
+</div>
+-->
+
+<app-items></app-items>
+
+  

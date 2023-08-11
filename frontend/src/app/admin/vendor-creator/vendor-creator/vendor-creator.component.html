@@ -1,0 +1,30 @@
+<h2>Create Vendor</h2>
+<form *ngIf="vendorForm" [formGroup]="vendorForm" (ngSubmit)="onSubmit()">
+    <div>
+        <label for="legalName">Legal Name</label>
+        <input id="legalName" type="text" formControlName="legalName">
+    </div>
+    <div>
+        <label for="email">Email</label>
+        <input id="email" type="text" formControlName="email">
+    </div>
+    <div>
+        <label for="phone">phone</label>
+        <input id="phone" type="text" formControlName="phone">
+    </div>
+    <div>
+        <label for="website">website</label>
+        <input id="website" type="text" formControlName="website">
+    </div>
+    <div>
+        <label for="registrationNumber">registrationNumber</label>
+        <input id="registrationNumber" type="text" formControlName="registrationNumber">
+    </div>
+    <div>
+        <label for="bankDetails">bankDetails</label>
+        <input id="bankDetails" type="text" formControlName="bankDetails">
+    </div>
+
+    <button type="submit">Submit</button>
+  </form>
+  

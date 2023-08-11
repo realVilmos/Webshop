@@ -1,0 +1,6 @@
+<div>Felhasználói adatok: </div>
+{{user | json}}
+
+<div *ngIf="isAdmin()">
+    <app-admin></app-admin>
+</div>

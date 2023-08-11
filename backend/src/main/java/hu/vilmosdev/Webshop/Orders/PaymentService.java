@@ -60,7 +60,7 @@ public class PaymentService {
             }
           }).sum();
 
-        System.out.println(totalAmount);
+        (totalAmount);
 
         Stripe.apiKey = apiKey;
         Map<String, Object> params = new HashMap<>();

@@ -1,0 +1,79 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+        <span><a routerLink="/">Webshop</a></span>
+        <span class="example-spacer"></span>
+        <button mat-icon-button [matMenuTriggerFor]="cartMenu">
+            <mat-icon>shopping_cart</mat-icon>
+            <span class="badge">{{totalItemCount}}</span>
+        </button>
+        <span style="width: 20px;"></span>
+        <div *ngIf="authService.getUser() !== null; else login">
+            <button mat-raised-button [matMenuTriggerFor]="profileMenu">
+                <mat-icon>person</mat-icon>
+                <span>{{authService.getUserName()}}</span>
+            </button>
+        </div>
+        <ng-template #login>
+            <button mat-raised-button [routerLink]="['/login']">
+                <mat-icon>person</mat-icon>
+                <span>Bejelentkezés</span>
+            </button>
+        </ng-template>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-menu #cartMenu="matMenu">
+    <div class="container">
+        <div class="header" *ngIf="totalItemCount != 0">
+            <span style="padding-top: 6px">Kosár tartalma</span>
+            <span class="example-spacer"></span>
+            <button mat-button color="warn" (click)="cartService.clearCart(); $event.stopPropagation()">Mind törlése</button>
+        </div>
+        <div class="cards">
+            <div *ngIf="totalItemCount == 0">
+                <mat-card-header>Sajnos üres a kosarad</mat-card-header>
+                <mat-card-content style="justify-content: center; display: flex;"><mat-icon>sentiment_very_dissatisfied</mat-icon></mat-card-content>
+            </div>
+            <mat-card *ngFor="let item of items" class="cart-card">
+                <mat-card-content style="display: flex;">
+                    <div class="card-image">
+                        <img [src]="apiUrl + '/api/items/uploads/' + item.imgUrl[0]" height="75px">
+                    </div> 
+                    <div class="card-details">
+                        <span>{{item.name}}</span>
+                        <div class="bottom-row">
+                            <div class="quantities">
+                                <button mat-icon-button (click)="cartService.decreaseItemQty(item); $event.stopPropagation()"><mat-icon class="small-icon">remove</mat-icon></button>
+                                Mennyiség: {{itemQuantities.get(item.id)}}
+                                <button mat-icon-button (click)="cartService.incrementItemQty(item); $event.stopPropagation()"><mat-icon class="small-icon">add</mat-icon></button>
+                            </div>
+                            <div class="price">Ár: {{item.price.onSale ? cartService.FormatPrice(item.price.salePrice * getItemQuantity(item.id)) : cartService.FormatPrice(item.price.originalPrice * getItemQuantity(item.id))}} Ft</div>
+                        </div>
+                    </div>
+                    <div class="remove-item">
+                        <button mat-mini-fab (click)="cartService.deleteItem(item); $event.stopPropagation()">
+                            <mat-icon color="warn">clear</mat-icon>
+                        </button>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div class="bottom" *ngIf="totalItemCount != 0">
+            <button mat-raised-button color="primary" [routerLink]="['/cart']">Kosárhoz</button>
+            <span class="example-spacer"></span>
+            <span><p>Összesen: {{cartService.FormatPrice(cartService.getTotalCost())}} Ft</p></span>
+        </div>
+    </div>
+</mat-menu>
+
+<mat-menu #profileMenu="matMenu">
+    <button mat-menu-item>
+        <mat-icon>summarize</mat-icon>
+        <span>Rendeléseim</span>
+    </button>
+    <button mat-menu-item [routerLink]="['/dashboard']">
+        <mat-icon>description</mat-icon>
+        <span>Adataim</span>
+    </button>
+</mat-menu>
+<router-outlet></router-outlet>
