@@ -1,0 +1,71 @@
+This is the item endpoint. You have the option to get pageable, list or a single items. Important to note that you can only get limited item details when getting more items than one, as for getting more items is generally to display them with minimal information.
+
+== Pagables
+
+=== Random items
+
+This endpoint exists to get randomized items. As this webshop currently doesn't collect any user behavior like what they click on, or what categories/manufacturers they like etc. This way random items can be displayed.
+
+Request:
+include::target/generated-snippets/Items/getting_random_items_pagable/http-request.adoc[]
+
+Response:
+include::target/generated-snippets/Items/getting_random_items_pagable/http-response.adoc[]
+
+See that in the request we specified the page and the size as parameters.
+
+=== Getting items by categories or manufacturers or both
+
+If the user filters by specific categories. On the /api/items endpoint you can filter down by any combinations of categories and manufacturers.
+
+Here is a simple request #by categories:#
+include::target/generated-snippets/Items/gettingItemsByCategoriesPagable/http-request.adoc[]
+
+At the moment there are one item in each category, therefore the response contains two items:
+include::target/generated-snippets/Items/gettingItemsByCategoriesPagable/http-response.adoc[]
+
+Or here is a request #by manufacturers:#
+include::target/generated-snippets/Items/gettingItemsByManufacturerPagable/http-request.adoc[]
+
+Response:
+include::target/generated-snippets/Items/gettingItemsByManufacturerPagable/http-response.adoc[]
+
+And finnaly filtering on both, here is a request by categories and manufacturers:
+include::target/generated-snippets/Items/testGetItemsByManufacturerAndCategoriesPagable/http-request.adoc[]
+Response:
+include::target/generated-snippets/Items/testGetItemsByManufacturerAndCategoriesPagable/http-response.adoc[]
+Here only one item is included, as there one item in each category, and specifying the manufacturer, filtered it down to one item.
+
+=== Getting a single item by id
+By getting an item by id, you get a more detailed response, this is useful for example when a user wants to find out more about an item.
+
+Request: api/items/<id>
+include::target/generated-snippets/Items/gettingItemById/http-request.adoc[]
+Response:
+include::target/generated-snippets/Items/gettingItemById/http-response.adoc[]
+
+=== Getting items in a batch
+You can get multiple items by there ids
+
+Request: ids parameter with the  given ids, seperated by commas /api/items/batch?ids=1,2,3,4,...
+include::target/generated-snippets/Items/gettingItemsByIdsBatchPartial/http-request.adoc[]
+In the request above there is a request for an id of 4000000. This item does not exist, so you would not get that given item. Therefore you will get all the other items, with a 206 Partial status code:
+include::target/generated-snippets/Items/gettingItemsByIdsBatchPartial/http-response.adoc[]
+
+If all the items were found you get a 200 status code with the items.
+
+If none of the items were found, you get a 404 response:
+
+include::target/generated-snippets/Items/gettingItemsByIdsBatchEmpty/http-response.adoc[]
+
+=== Getting images for the item
+
+This endpoint also provides a resource for getting the images.
+
+Request:
+include::target/generated-snippets/Items/gettingImageServed/http-request.adoc[]
+
+As this image exists, it will return a 200 status with the image. this can be displayed right away on a website e.g. <img src="http://localhost:8080/api/items/uploads/something.jpg">
+
+If the image is not found, you will get a 404 back:
+include::target/generated-snippets/Items/gettingImageNotFound/http-response.adoc[]

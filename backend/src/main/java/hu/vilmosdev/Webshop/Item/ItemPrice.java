@@ -1,9 +1,7 @@
 package hu.vilmosdev.Webshop.Item;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,5 +21,19 @@ public class ItemPrice {
   private Long originalPrice;
   private Long salePrice;
   private boolean isOnSale;
+  @Column(nullable = false)
+  private LocalDate priceStartDate; // When the price became active
   private LocalDate saleEndDate;
+  @ManyToOne
+  @JoinColumn(name = "item_id")
+  @JsonIgnore
+  private Item item;
+
+  @PrePersist
+  void setPriceStart(){
+    if (this.priceStartDate == null) {
+      this.priceStartDate = LocalDate.now();
+    }
+  }
+
 }

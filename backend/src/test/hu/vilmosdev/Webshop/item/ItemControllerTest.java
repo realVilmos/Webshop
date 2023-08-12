@@ -39,8 +39,7 @@ public class ItemControllerTest {
 
   @Test
   public void testGetRandomPagable() throws Exception {
-
-    mockMvc.perform(MockMvcRequestBuilders.get("/api/items/random?page=1&size=3"))
+    mockMvc.perform(MockMvcRequestBuilders.get("/api/items/random?page=0&size=3"))
       .andExpect(status().isOk())
       .andDo(document("Items/getting_random_items_pagable"));
   }
@@ -48,24 +47,24 @@ public class ItemControllerTest {
   @Test
   public void testGetItemsByCategoriesPagable() throws Exception {
 
-    mockMvc.perform(MockMvcRequestBuilders.get("/api/items?page=1&size=8&category=1&category=2"))
+    mockMvc.perform(MockMvcRequestBuilders.get("/api/items?page=0&size=8&category=3&category=36"))
       .andExpect(status().isOk())
       .andDo(document("Items/gettingItemsByCategoriesPagable"));
   }
 
   @Test
-  public void testGetItemsByVendorsPagable() throws Exception {
+  public void testGetItemsByManufacturer() throws Exception {
 
-    mockMvc.perform(MockMvcRequestBuilders.get("/api/items?page=1&size=8&vendor=1&vendor=2"))
+    mockMvc.perform(MockMvcRequestBuilders.get("/api/items?page=0&size=8&manufacturer=Samsung"))
       .andExpect(status().isOk())
-      .andDo(document("Items/gettingItemsByVendorPagable"));
+      .andDo(document("Items/gettingItemsByManufacturerPagable"));
   }
 
   @Test
-  public void testGetItemsByVendorAndCategoriesPagable() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.get("/api/items?page=1&size=8&vendor=1&vendor=2&category=1&category=2"))
+  public void testGetItemsByManufacturerAndCategoriesPagable() throws Exception {
+    mockMvc.perform(MockMvcRequestBuilders.get("/api/items?page=0&size=8&category=3&category=33&manufacturer=Samsung"))
       .andExpect(status().isOk())
-      .andDo(document("Items/gettingItemsByVendorAndCategoryPagable"));
+      .andDo(document("Items/testGetItemsByManufacturerAndCategoriesPagable"));
   }
 
   @Test
@@ -84,21 +83,27 @@ public class ItemControllerTest {
 
   @Test
   public void testItemsByIdBatch() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.get("/api/items/batch?1,2,3"))
+    mockMvc.perform(MockMvcRequestBuilders.get("/api/items/batch?ids=1,2"))
       .andExpect(status().isOk())
       .andDo(document("Items/gettingItemsByIdsBatch"));
   }
 
   @Test
   public void testItemsByIdPartialContent() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.get("/api/items/batch?1,2,4000000"))
+    mockMvc.perform(MockMvcRequestBuilders.get("/api/items/batch?ids=1,2,4000000"))
       .andExpect(status().isPartialContent())
-      .andDo(document("Items/gettingItemsByIdsBatch"));
+      .andDo(document("Items/gettingItemsByIdsBatchPartial"));
+  }
+  @Test
+  public void testItemsByIdBatchEmpty() throws Exception {
+    mockMvc.perform(MockMvcRequestBuilders.get("/api/items/batch?ids=4000000,500000"))
+      .andExpect(status().isNotFound())
+      .andDo(document("Items/gettingItemsByIdsBatchEmpty"));
   }
 
   @Test
   public void testGettingImageServed() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.get("/api/items/uploads/something.png"))
+    mockMvc.perform(MockMvcRequestBuilders.get("/api/items/uploads/something.jpg"))
       .andExpect(status().isOk())
       .andDo(document("Items/gettingImageServed"));
   }

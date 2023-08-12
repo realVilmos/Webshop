@@ -48,7 +48,7 @@ public class PaymentService {
         long totalAmount = items
           .stream()
           .mapToLong(item -> {
-            ItemPrice price = item.getItemPrice();
+            ItemPrice price = item.getLatestPrice();
             if (chargeRequest.getItemQuantities().get(item.getId()) > 0) {
               if (price.isOnSale() && LocalDate.now().isBefore(price.getSaleEndDate())) {
                 return price.getSalePrice() * chargeRequest.getItemQuantities().get(item.getId());
@@ -59,8 +59,6 @@ public class PaymentService {
               throw new RuntimeException("Invalid order");
             }
           }).sum();
-
-        (totalAmount);
 
         Stripe.apiKey = apiKey;
         Map<String, Object> params = new HashMap<>();

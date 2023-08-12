@@ -31,7 +31,6 @@ public class ImageStorageService {
         byte[] bytes = Base64.getDecoder().decode(image[1]); // Splitting to remove "data:image/png;base64,"
 
         Path path = Paths.get("./uploads", UUID.randomUUID() + ".png");
-        (path.toAbsolutePath());
         Files.write(path, bytes);
         return path.getFileName().toString();
       } catch (IOException e) {

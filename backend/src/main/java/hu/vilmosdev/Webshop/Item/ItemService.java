@@ -1,18 +1,24 @@
 package hu.vilmosdev.Webshop.Item;
 
 import hu.vilmosdev.Webshop.Item.Category.CategoryRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
@@ -50,8 +56,9 @@ public class ItemService {
         .weight(request.getWeight())
         .dimensions(request.getDimensions())
         .manufacturer(request.getManufacturer())
-        .itemPrice(price)
         .build();
+
+      item.setItemPrices(List.of(price));
 
       for(String base64Images : request.getImages()){
         String fileName = imageStorageService.store(base64Images);
@@ -69,37 +76,31 @@ public class ItemService {
     }
   }
 
-
-  public ResponseEntity<Page<ReducedItemResponse>> findByCategoryIn(List<Long> categoryIds, Pageable pageable) {
+  public ResponseEntity<?> findByCategoryInAndManufacturerIn(List<Long> categoryIds, List<String> manufacturers, Pageable pageable) {
     try{
-      Page<Item> items = itemRepository.findByCategoryIdIn(categoryIds, pageable);
-      return ResponseEntity.ok(new PageImpl<>(reduceItemProperies(items), pageable, items.getTotalElements()));
-    }catch (RuntimeException e) {
-      logger.error("Error when getting items by category: " + e.getMessage());
-      e.printStackTrace();
-      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error when getting items by category: ", e);
-    }
-  }
+      Page<Item> items = null;
+      if(!manufacturers.isEmpty() && categoryIds.isEmpty()){
+        System.out.println("Search by manufactureres");
+        items = itemRepository.findByManufacturerIn(manufacturers, pageable);
+      }
+      if(!categoryIds.isEmpty() && manufacturers.isEmpty()){
+        System.out.println("Search by categoryId");
+        items = itemRepository.findByCategory_IdIn(categoryIds, pageable);
+      }
+      if(!categoryIds.isEmpty() && !manufacturers.isEmpty()){
+        System.out.println("Search by both");
+        items = itemRepository.findByCategory_IdInAndManufacturerIn(categoryIds, manufacturers, pageable);
+      }
 
-  public ResponseEntity<Page<ReducedItemResponse>> findByVendorIn(List<Long> vendors, Pageable pageable) {
-    try{
-      Page<Item> items = itemRepository.findByVendorIdIn(vendors, pageable);
-      return ResponseEntity.ok(new PageImpl<>(reduceItemProperies(items), pageable, items.getTotalElements()));
+      if(items == null){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No items were found.");
+      }else{
+        return ResponseEntity.ok(new PageImpl<>(reduceItemProperies(items), pageable, items.getTotalElements()));
+      }
     }catch (RuntimeException e) {
       logger.error("Error when getting items by vendor: " + e.getMessage());
       e.printStackTrace();
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error when getting items by vendor: ", e);
-    }
-  }
-
-  public ResponseEntity<Page<ReducedItemResponse>> findByCategoryInAndVendorIn(List<Long> categoryIds, List<Long> vendorIds, Pageable pageable) {
-    try{
-      Page<Item> items = itemRepository.findByCategoryInAndVendorIn(categoryIds, vendorIds, pageable);
-      return ResponseEntity.ok(new PageImpl<>(reduceItemProperies(items), pageable, items.getTotalElements()));
-    }catch (RuntimeException e) {
-      logger.error("Error when getting items by vendor and category: " + e.getMessage());
-      e.printStackTrace();
-      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error when getting items by vendor and category: ", e);
     }
   }
 
@@ -119,7 +120,7 @@ public class ItemService {
       Item item = itemRepository.getReferenceById(id);
 
       ItemResponse request = ItemResponse.builder()
-        .price(item.getItemPrice())
+        .price(item.getLatestPrice())
         .name(item.getName())
         .imgUrl(item.getImages().stream().map((ItemImage::getImageName)).toList())
         .quantityInStock(item.getQuantityInStock())
@@ -132,6 +133,9 @@ public class ItemService {
         .build();
 
       return ResponseEntity.ok(request);
+    }catch(EntityNotFoundException e){
+      logger.error("Entity not found: " + e.getMessage());
+      throw new NotFoundException("Item not found: " + id);
     }
     catch (RuntimeException e) {
       logger.error("Error when getting item by id: " + e.getMessage());
@@ -141,7 +145,9 @@ public class ItemService {
   }
 
   public List<ItemResponse> getItemsByIdsForUser(List<Long> ids){
-    try{}
+    try{
+
+    }
     catch (RuntimeException e) {
       logger.error("Error when getting items by ids: " + e.getMessage());
       e.printStackTrace();
@@ -155,7 +161,7 @@ public class ItemService {
     return items.getContent().stream().map(item -> {
       ReducedItemResponse rir = new ReducedItemResponse();
       rir.setName(item.getName());
-      rir.setItemPrice(item.getItemPrice());
+      rir.setItemPrice(item.getLatestPrice());
       rir.setImgUrl(item.getImages().get(0).getImageName());
       rir.setRating(item.getRating());
       rir.setId(item.getId());
@@ -168,7 +174,7 @@ public class ItemService {
     return items.stream().map(item -> {
       return ItemResponse.builder()
         .id(item.getId())
-        .price(item.getItemPrice())
+        .price(item.getLatestPrice())
         .category(item.getCategory().getName())
         .description(item.getDescription())
         .dimensions(item.getDimensions())

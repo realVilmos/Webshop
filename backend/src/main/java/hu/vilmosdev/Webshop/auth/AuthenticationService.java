@@ -58,7 +58,6 @@ public class AuthenticationService {
   }
   @Transactional
   public void register(RegisterRequest request){
-    (request);
     try{
       String randomCode = generateRandomString(64);
       var user = User.builder()
@@ -210,7 +209,6 @@ public class AuthenticationService {
       }
 
       if (userEmail != null){
-        (userEmail);
         User user = this.repository.findByEmail(userEmail).orElseThrow(()-> new UsernameNotFoundException("User not found"));
         if(jwtService.isTokenValid(refreshToken, user)){
 

@@ -1,5 +1,6 @@
 package hu.vilmosdev.Webshop.config;
 import com.stripe.exception.StripeException;
+import hu.vilmosdev.Webshop.Item.NotFoundException;
 import hu.vilmosdev.Webshop.user.InvalidUserCredentialsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,5 +54,13 @@ public class GlobalExceptionHandler {
   public ResponseEntity<Object> handleInvalidCredentials(InvalidUserCredentialsException ex) {
     String errorMessage = ex.getMessage();
     return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
+  }
+
+  @ExceptionHandler(NotFoundException.class)
+  @ResponseBody
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  public ResponseEntity<Object> notFound(NotFoundException ex) {
+    String errorMessage = ex.getMessage();
+    return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
   }
 }

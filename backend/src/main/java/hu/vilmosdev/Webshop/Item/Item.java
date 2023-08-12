@@ -8,7 +8,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Data
@@ -42,8 +44,8 @@ public class Item {
   @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
   private List<ItemReview> reviews;
 
-  @OneToOne(cascade = CascadeType.ALL)
-  private ItemPrice itemPrice;
+  @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+  private List<ItemPrice> itemPrices;
 
   void addImage(ItemImage itemImage){
     if(this.images == null){
@@ -51,6 +53,25 @@ public class Item {
     }
     this.images.add(itemImage);
     itemImage.setItem(this);
+  }
+
+  public ItemPrice getLatestPrice(){
+    return itemPrices.stream()
+      .filter(itemPrice -> !itemPrice.getPriceStartDate().isAfter(LocalDate.now()))
+      .max(Comparator.comparing(ItemPrice::getPriceStartDate))
+      .orElse(null);
+  }
+  @PrePersist
+  private void prePersist() {
+    for(ItemPrice itemPrice : this.itemPrices) {
+      itemPrice.setItem(this);
+    }
+    for(ItemReview review: this.reviews){
+      review.setItem(this);
+    }
+    for(ItemImage image: this.images){
+      image.setItem(this);
+    }
   }
 
 }
