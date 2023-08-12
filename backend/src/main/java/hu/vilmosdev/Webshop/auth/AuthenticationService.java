@@ -146,7 +146,7 @@ public class AuthenticationService {
 
   // Hard kijelentkeztetésre ha minden eszközről kiszeretne jelentkezni a felhasználó vagy mi akarjuk kiléptetni mindenhonnan
   @Transactional
-  private void revokeAllUserTokens(User user) {
+  public void revokeAllUserTokens(User user) {
     try{
       var validAccessUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
       var validRefreshUserTokens = refreshTokenRepository.findAllValidTokenByUser(user.getId());

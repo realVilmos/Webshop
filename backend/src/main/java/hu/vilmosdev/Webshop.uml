@@ -1,0 +1,647 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>C:/Users/kecsk/OneDrive/Documents/Web4CV/Webshop/backend/src/main/java/hu/vilmosdev/Webshop</OriginalElement>
+  <nodes>
+    <node x="4696.273978494624" y="644.0">hu.vilmosdev.Webshop.Orders.PaymentRepository</node>
+    <node x="4947.148978494624" y="2997.311203319502">hu.vilmosdev.Webshop.Orders.PaymentIntentResponse</node>
+    <node x="6268.148978494624" y="3033.311203319502">hu.vilmosdev.Webshop.auth.AuthenticationRequest</node>
+    <node x="4449.148978494624" y="1900.5">hu.vilmosdev.Webshop.Orders.Payment</node>
+    <node x="3690.1489784946243" y="22.5">hu.vilmosdev.Webshop.Item.ItemController</node>
+    <node x="5022.273978494624" y="644.0">hu.vilmosdev.Webshop.user.BillingAddressRepoistory</node>
+    <node x="3972.635537634409" y="602.5">hu.vilmosdev.Webshop.Item.ItemImage</node>
+    <node x="6612.235000000001" y="566.5">hu.vilmosdev.Webshop.config.JwtService</node>
+    <node x="4963.273978494624" y="219.5">hu.vilmosdev.Webshop.Orders.PaymentService</node>
+    <node x="6966.273978494624" y="995.0">hu.vilmosdev.Webshop.token.TokenRepository</node>
+    <node x="2695.9850000000006" y="-13.5">hu.vilmosdev.Webshop.admin.AdminController</node>
+    <node x="3907.148978494624" y="2961.311203319502">hu.vilmosdev.Webshop.user.BillingAddressResponse</node>
+    <node x="5806.273978494624" y="22.5">hu.vilmosdev.Webshop.auth.AuthenticationController</node>
+    <node x="2900.6489784946243" y="644.0">hu.vilmosdev.Webshop.Item.ImageStorageService</node>
+    <node x="4649.273978494624" y="255.5">hu.vilmosdev.Webshop.Orders.StripeWebhookController</node>
+    <node x="3947.135537634409" y="833.5">hu.vilmosdev.Webshop.Item.Item</node>
+    <node x="5987.148978494624" y="3033.311203319502">hu.vilmosdev.Webshop.Item.Category.CategoryCreationRequest</node>
+    <node x="5345.273978494624" y="255.5">hu.vilmosdev.Webshop.user.UserService</node>
+    <node x="3167.385537634409" y="267.5">hu.vilmosdev.Webshop.Item.Category.CategoryService</node>
+    <node x="4479.148978494624" y="2417.5">hu.vilmosdev.Webshop.Orders.PaymentStatus</node>
+    <node x="3455.6489784946243" y="929.5">hu.vilmosdev.Webshop.Item.ReducedItemResponse</node>
+    <node x="4964.398978494624" y="2393.5">hu.vilmosdev.Webshop.token.RefreshToken</node>
+    <node x="6147.273978494624" y="995.0">hu.vilmosdev.Webshop.config.CustomJwtException</node>
+    <node x="6525.148978494624" y="3062.811203319502">hu.vilmosdev.Webshop.config.GlobalExceptionHandler</node>
+    <node x="3804.6489784946243" y="2429.5">hu.vilmosdev.Webshop.Item.ItemQuantity</node>
+    <node x="3631.1489784946243" y="243.5">hu.vilmosdev.Webshop.Item.ItemService</node>
+    <node x="4278.148978494624" y="2405.5">hu.vilmosdev.Webshop.user.BillingAddress</node>
+    <node x="4242.610000000001" y="2628.5">hu.vilmosdev.Webshop.user.Address</node>
+    <node x="4515.860000000001" y="1270.5">hu.vilmosdev.Webshop.Item.Reviews.ItemReview</node>
+    <node x="6283.735000000001" y="626.5">hu.vilmosdev.Webshop.user.InvalidUserCredentialsException</node>
+    <node x="4697.148978494624" y="3045.311203319502">hu.vilmosdev.Webshop.Item.Reviews.ItemReviewService</node>
+    <node x="3664.148978494624" y="2901.311203319502">hu.vilmosdev.Webshop.Item.ItemCreationRequest</node>
+    <node x="5519.148978494624" y="3009.311203319502">hu.vilmosdev.Webshop.auth.RegisterRequest</node>
+    <node x="5726.148978494624" y="3062.811203319502">hu.vilmosdev.Webshop.Item.Category.CategoryWithoutParent</node>
+    <node x="4697.148978494624" y="2853.311203319502">hu.vilmosdev.Webshop.Item.Reviews.ItemReviewRepository</node>
+    <node x="6680.773978494624" y="995.0">hu.vilmosdev.Webshop.token.RefreshTokenRepository</node>
+    <node x="3188.385537634409" y="22.5">hu.vilmosdev.Webshop.Item.Category.CategoryController</node>
+    <node x="5427.773978494624" y="644.0">hu.vilmosdev.Webshop.user.AddressRepository</node>
+    <node x="3819.6489784946243" y="1972.5">hu.vilmosdev.Webshop.Orders.ReducedPaymentResponse</node>
+    <node x="3132.6489784946243" y="644.0">hu.vilmosdev.Webshop.Item.VendorRepository</node>
+    <node x="4176.148978494624" y="2973.311203319502">hu.vilmosdev.Webshop.user.BillingAddressRequest</node>
+    <node x="4719.860000000001" y="1258.5">hu.vilmosdev.Webshop.Item.Vendor</node>
+    <node x="4466.360000000001" y="1519.5">hu.vilmosdev.Webshop.user.User</node>
+    <node x="4027.6489784946243" y="1579.5">hu.vilmosdev.Webshop.auth.AuthenticationResponse</node>
+    <node x="5018.273978494624" y="22.5">hu.vilmosdev.Webshop.Orders.PaymentController</node>
+    <node x="3035.3600000000006" y="857.5">hu.vilmosdev.Webshop.Item.ItemResponse</node>
+    <node x="5425.273978494624" y="22.5">hu.vilmosdev.Webshop.user.UserController</node>
+    <node x="4100.648978494624" y="2056.5">hu.vilmosdev.Webshop.user.Role</node>
+    <node x="6791.148978494624" y="3062.811203319502">hu.vilmosdev.Webshop.Item.ItemImageRepository</node>
+    <node x="6905.023978494624" y="255.5">hu.vilmosdev.Webshop.config.JwtAuthenticationFilter</node>
+    <node x="4697.148978494624" y="1996.5">hu.vilmosdev.Webshop.user.UserDetailsResponse</node>
+    <node x="6974.023978494624" y="-1.5">hu.vilmosdev.Webshop.config.SecurityConfiguration</node>
+    <node x="2785.385537634409" y="279.5">hu.vilmosdev.Webshop.Item.VendorService</node>
+    <node x="6094.735000000001" y="644.0">hu.vilmosdev.Webshop.user.UserRepository</node>
+    <node x="5001.148978494624" y="2008.5">hu.vilmosdev.Webshop.token.Token</node>
+    <node x="7033.148978494624" y="3062.811203319502">hu.vilmosdev.Webshop.WebshopApplication</node>
+    <node x="3354.6489784946243" y="644.0">hu.vilmosdev.Webshop.Item.Category.CategoryRepository</node>
+    <node x="4510.273978494624" y="644.0">hu.vilmosdev.Webshop.Item.ItemRepository</node>
+    <node x="7118.985000000001" y="602.5">hu.vilmosdev.Webshop.config.LogoutService</node>
+    <node x="4431.148978494624" y="3045.311203319502">hu.vilmosdev.Webshop.Item.Reviews.ItemReviewController</node>
+    <node x="3664.148978494624" y="3272.311203319502">hu.vilmosdev.Webshop.config.CorsConfiguration</node>
+    <node x="4253.635537634409" y="1282.5">hu.vilmosdev.Webshop.Item.ItemPrice</node>
+    <node x="5217.148978494624" y="3009.311203319502">hu.vilmosdev.Webshop.Orders.ChargeRequest</node>
+    <node x="5727.273978494624" y="183.5">hu.vilmosdev.Webshop.auth.AuthenticationService</node>
+    <node x="6147.273978494624" y="291.5">hu.vilmosdev.Webshop.config.ApplicationConfig</node>
+    <node x="3068.8600000000006" y="1294.5">hu.vilmosdev.Webshop.Item.Category.Category</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="hu.vilmosdev.Webshop.Item.ItemQuantity" target="hu.vilmosdev.Webshop.Item.Item" relationship="TO_ONE">
+      <point x="-74.99997849462443" y="-0.0" />
+      <point x="3787.149" y="2485.0" />
+      <point x="3787.149" y="1221.0" />
+      <point x="4053.636" y="1221.0" />
+      <point x="4.623655909199442E-4" y="175.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.auth.AuthenticationService" target="hu.vilmosdev.Webshop.token.RefreshTokenRepository" relationship="TO_ONE">
+      <point x="-29.999978494623974" y="139.5" />
+      <point x="5897.274" y="540.0" />
+      <point x="7495.485" y="540.0" />
+      <point x="7495.485" y="1527.0" />
+      <point x="6800.774" y="1527.0" />
+      <point x="2.1505376025743317E-5" y="14.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.auth.AuthenticationService" target="hu.vilmosdev.Webshop.user.UserRepository" relationship="TO_ONE">
+      <point x="-14.999978494623974" y="139.5" />
+      <point x="5912.274" y="488.0" />
+      <point x="5662.0" y="488.0" />
+      <point x="5662.0" y="658.0" />
+      <point x="-84.50000000000091" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.auth.AuthenticationService" target="hu.vilmosdev.Webshop.token.TokenRepository" relationship="TO_ONE">
+      <point x="2.1505376025743317E-5" y="139.5" />
+      <point x="5927.274" y="514.0" />
+      <point x="6951.0" y="514.0" />
+      <point x="6951.0" y="1009.0" />
+      <point x="-90.49997849462397" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Item.ItemResponse" target="hu.vilmosdev.Webshop.Item.ItemPrice" relationship="TO_ONE">
+      <point x="-4.547473508864641E-13" y="151.5" />
+      <point x="3121.86" y="1202.0" />
+      <point x="4349.136" y="1202.0" />
+      <point x="4.623655913746916E-4" y="-79.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Item.Category.CategoryController" target="hu.vilmosdev.Webshop.Item.Category.CategoryService" relationship="TO_ONE">
+      <point x="-127.99953763440908" y="-0.0" />
+      <point x="3114.0" y="54.0" />
+      <point x="3114.0" y="323.0" />
+      <point x="-148.99953763440908" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Item.ReducedItemResponse" target="hu.vilmosdev.Webshop.Item.ItemPrice" relationship="TO_ONE">
+      <point x="2.1505375570995966E-5" y="79.5" />
+      <point x="3569.149" y="1202.0" />
+      <point x="4349.136" y="1202.0" />
+      <point x="4.623655913746916E-4" y="-79.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Orders.PaymentService" target="hu.vilmosdev.Webshop.user.AddressRepository" relationship="TO_ONE">
+      <point x="181.00002150537603" y="90.5" />
+      <point x="5376.0" y="413.5" />
+      <point x="5376.0" y="658.0" />
+      <point x="-98.49997849462397" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.user.UserService" target="hu.vilmosdev.Webshop.user.BillingAddressRepoistory" relationship="TO_ONE">
+      <point x="-172.77397849462432" y="67.5" />
+      <point x="5353.5" y="455.0" />
+      <point x="5129.274" y="455.0" />
+      <point x="-14.999978494623974" y="-14.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Item.ItemService" target="hu.vilmosdev.Webshop.Item.Category.CategoryRepository" relationship="TO_ONE">
+      <point x="-157.99997849462443" y="-0.0" />
+      <point x="3594.0" y="323.0" />
+      <point x="3594.0" y="658.0" />
+      <point x="102.00002150537557" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.config.JwtAuthenticationFilter" target="hu.vilmosdev.Webshop.config.JwtService" relationship="TO_ONE">
+      <point x="-142.99997849462397" y="-0.0" />
+      <point x="6486.0" y="323.0" />
+      <point x="6486.0" y="603.5" />
+      <point x="-162.0000000000009" y="-54.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Orders.Payment" target="hu.vilmosdev.Webshop.user.Address" relationship="TO_ONE">
+      <point x="-14.999978494623974" y="199.5" />
+      <point x="4548.149" y="2322.0" />
+      <point x="4415.0" y="2322.0" />
+      <point x="4415.0" y="2365.0" />
+      <point x="4245.649" y="2365.0" />
+      <point x="-86.46100000000024" y="-103.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Item.Item" target="hu.vilmosdev.Webshop.Item.Vendor" relationship="TO_ONE">
+      <point x="106.5" y="-0.0" />
+      <point x="4825.360000000001" y="1009.0" />
+      <point x="-0.0" y="-103.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.admin.AdminController" target="hu.vilmosdev.Webshop.Item.ItemService" relationship="TO_ONE">
+      <point x="-4.547473508864641E-13" y="67.5" />
+      <point x="2853.985" y="182.0" />
+      <point x="3789.149" y="182.0" />
+      <point x="2.1505375570995966E-5" y="-79.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.config.ApplicationConfig" target="hu.vilmosdev.Webshop.user.UserRepository" relationship="TO_ONE">
+      <point x="2.1505376025743317E-5" y="31.5" />
+      <point x="6253.774" y="488.0" />
+      <point x="5662.0" y="488.0" />
+      <point x="5662.0" y="658.0" />
+      <point x="-84.50000000000091" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.config.SecurityConfiguration" target="hu.vilmosdev.Webshop.config.LogoutService" relationship="TO_ONE">
+      <point x="169.0" y="-0.0" />
+      <point x="7510.485" y="54.0" />
+      <point x="7510.485" y="658.0" />
+      <point x="179.5" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.token.RefreshToken" target="hu.vilmosdev.Webshop.user.User" relationship="TO_ONE">
+      <point x="2.1505376025743317E-5" y="-91.5" />
+      <point x="5045.899" y="2346.0" />
+      <point x="4358.0" y="2346.0" />
+      <point x="4358.0" y="1683.0" />
+      <point x="-141.5000000000009" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Orders.PaymentService" target="hu.vilmosdev.Webshop.Item.ItemRepository" relationship="TO_ONE">
+      <point x="-37.773978494624316" y="103.5" />
+      <point x="5106.5" y="455.0" />
+      <point x="4593.274" y="455.0" />
+      <point x="2.1505376025743317E-5" y="-14.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Item.ItemService" target="hu.vilmosdev.Webshop.Item.ItemImage" relationship="CREATE">
+      <point x="38.0" y="79.5" />
+      <point x="3827.1489784946243" y="658.0" />
+      <point x="-81.0" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.token.RefreshToken" target="hu.vilmosdev.Webshop.token.Token" relationship="TO_ONE">
+      <point x="70.25002150537603" y="-91.5" />
+      <point x="5116.149" y="2262.0" />
+      <point x="5086.149" y="2262.0" />
+      <point x="-14.999978494623974" y="91.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.user.User" target="hu.vilmosdev.Webshop.user.BillingAddress" relationship="TO_MANY">
+      <point x="-9.094947017729282E-13" y="163.5" />
+      <point x="4607.86" y="1873.0" />
+      <point x="4432.0" y="1873.0" />
+      <point x="4432.0" y="2361.0" />
+      <point x="4456.649" y="2361.0" />
+      <point x="88.00002150537603" y="-79.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.token.Token" target="hu.vilmosdev.Webshop.token.RefreshToken" relationship="TO_ONE">
+      <point x="-70.24997849462397" y="91.5" />
+      <point x="-14.999978494623974" y="-91.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Item.Category.CategoryService" target="hu.vilmosdev.Webshop.Item.Category.CategoryRepository" relationship="TO_ONE">
+      <point x="149.00046236559092" y="-0.0" />
+      <point x="3594.0" y="323.0" />
+      <point x="3594.0" y="658.0" />
+      <point x="102.00002150537557" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Orders.ReducedPaymentResponse" target="hu.vilmosdev.Webshop.Item.ItemQuantity" relationship="TO_MANY">
+      <point x="-14.999978494624429" y="127.5" />
+      <point x="3935.149" y="2274.0" />
+      <point x="3879.649" y="2274.0" />
+      <point x="2.1505375570995966E-5" y="-55.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.user.BillingAddress" target="hu.vilmosdev.Webshop.user.User" relationship="TO_ONE">
+      <point x="2.1505376025743317E-5" y="-79.5" />
+      <point x="4368.649" y="2384.0" />
+      <point x="4358.0" y="2384.0" />
+      <point x="4358.0" y="1683.0" />
+      <point x="-141.5000000000009" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Orders.PaymentService" target="hu.vilmosdev.Webshop.user.UserRepository" relationship="TO_ONE">
+      <point x="2.1505376025743317E-5" y="103.5" />
+      <point x="5144.274" y="488.0" />
+      <point x="5662.0" y="488.0" />
+      <point x="5662.0" y="658.0" />
+      <point x="-84.50000000000091" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.auth.AuthenticationService" target="hu.vilmosdev.Webshop.config.JwtService" relationship="TO_ONE">
+      <point x="200.00002150537603" y="-49.0" />
+      <point x="6486.0" y="274.0" />
+      <point x="6486.0" y="603.5" />
+      <point x="-162.0000000000009" y="-54.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Item.Reviews.ItemReviewController" target="hu.vilmosdev.Webshop.Item.Reviews.ItemReviewService" relationship="TO_ONE">
+      <point x="108.0" y="-0.0" />
+      <point x="-110.0" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Item.ItemService" target="hu.vilmosdev.Webshop.Item.ReducedItemResponse" relationship="CREATE">
+      <point x="-150.5" y="79.5" />
+      <point x="69.5" y="-79.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.config.LogoutService" target="hu.vilmosdev.Webshop.token.RefreshTokenRepository" relationship="TO_ONE">
+      <point x="14.99999999999909" y="-55.5" />
+      <point x="7313.485" y="540.0" />
+      <point x="7495.485" y="540.0" />
+      <point x="7495.485" y="1527.0" />
+      <point x="6800.774" y="1527.0" />
+      <point x="2.1505376025743317E-5" y="14.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Item.Reviews.ItemReview" target="hu.vilmosdev.Webshop.user.User" relationship="TO_ONE">
+      <point x="-9.094947017729282E-13" y="91.5" />
+      <point x="4607.86" y="1502.0" />
+      <point x="4358.0" y="1502.0" />
+      <point x="4358.0" y="1683.0" />
+      <point x="-141.5000000000009" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Item.ItemService" target="hu.vilmosdev.Webshop.Item.ItemRepository" relationship="TO_ONE">
+      <point x="2.1505375570995966E-5" y="79.5" />
+      <point x="3789.149" y="455.0" />
+      <point x="4593.274" y="455.0" />
+      <point x="2.1505376025743317E-5" y="-14.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.auth.AuthenticationController" target="hu.vilmosdev.Webshop.auth.AuthenticationService" relationship="TO_ONE">
+      <point x="-0.0" y="31.5" />
+      <point x="-0.0" y="-139.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.user.UserService" target="hu.vilmosdev.Webshop.user.UserRepository" relationship="TO_ONE">
+      <point x="2.1505376025743317E-5" y="67.5" />
+      <point x="5526.274" y="488.0" />
+      <point x="5662.0" y="488.0" />
+      <point x="5662.0" y="658.0" />
+      <point x="-84.50000000000091" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Item.ItemController" target="hu.vilmosdev.Webshop.Item.ItemService" relationship="TO_ONE">
+      <point x="2.1505375570995966E-5" y="31.5" />
+      <point x="2.1505375570995966E-5" y="-79.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.user.UserService" target="hu.vilmosdev.Webshop.user.AddressRepository" relationship="TO_ONE">
+      <point x="-14.999978494623974" y="67.5" />
+      <point x="5511.274" y="455.0" />
+      <point x="5376.0" y="455.0" />
+      <point x="5376.0" y="658.0" />
+      <point x="-98.49997849462397" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.user.BillingAddress" target="hu.vilmosdev.Webshop.user.Address" relationship="TO_ONE">
+      <point x="31.351021505375684" y="-79.5" />
+      <point x="4400.0" y="2365.0" />
+      <point x="4245.649" y="2365.0" />
+      <point x="-86.46100000000024" y="-103.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.user.UserController" target="hu.vilmosdev.Webshop.user.UserService" relationship="TO_ONE">
+      <point x="-0.0" y="31.5" />
+      <point x="-0.0" y="-67.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.config.JwtService" target="hu.vilmosdev.Webshop.token.RefreshTokenRepository" relationship="TO_ONE">
+      <point x="-9.094947017729282E-13" y="-91.5" />
+      <point x="6774.235" y="540.0" />
+      <point x="7495.485" y="540.0" />
+      <point x="7495.485" y="1527.0" />
+      <point x="6800.774" y="1527.0" />
+      <point x="2.1505376025743317E-5" y="14.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Item.Reviews.ItemReview" target="hu.vilmosdev.Webshop.Item.Item" relationship="TO_ONE">
+      <point x="-9.094947017729282E-13" y="-91.5" />
+      <point x="4607.86" y="1221.0" />
+      <point x="4053.636" y="1221.0" />
+      <point x="4.623655909199442E-4" y="175.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Orders.Payment" target="hu.vilmosdev.Webshop.Orders.PaymentStatus" relationship="TO_ONE">
+      <point x="15.000021505376026" y="199.5" />
+      <point x="15.000021505376026" y="-67.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Orders.ReducedPaymentResponse" target="hu.vilmosdev.Webshop.user.Address" relationship="TO_ONE">
+      <point x="2.1505375570995966E-5" y="127.5" />
+      <point x="3950.149" y="2322.0" />
+      <point x="4415.0" y="2322.0" />
+      <point x="4415.0" y="2365.0" />
+      <point x="4245.649" y="2365.0" />
+      <point x="-86.46100000000024" y="-103.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Item.ItemService" target="hu.vilmosdev.Webshop.Item.ImageStorageService" relationship="TO_ONE">
+      <point x="-14.999978494624429" y="-79.5" />
+      <point x="3774.149" y="212.0" />
+      <point x="2767.886" y="212.0" />
+      <point x="2767.886" y="658.0" />
+      <point x="-105.99997849462443" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Item.Item" target="hu.vilmosdev.Webshop.Item.Reviews.ItemReview" relationship="TO_MANY">
+      <point x="15.00046236559092" y="175.5" />
+      <point x="4068.636" y="1483.0" />
+      <point x="4592.86" y="1483.0" />
+      <point x="-15.00000000000091" y="91.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Item.ItemService" target="hu.vilmosdev.Webshop.Item.VendorRepository" relationship="TO_ONE">
+      <point x="-14.999978494624429" y="79.5" />
+      <point x="3774.149" y="528.0" />
+      <point x="3227.149" y="528.0" />
+      <point x="2.1505375570995966E-5" y="-14.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Item.Reviews.ItemReviewService" target="hu.vilmosdev.Webshop.Item.Reviews.ItemReviewRepository" relationship="TO_ONE">
+      <point x="0.0" y="-31.5" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.config.JwtService" target="hu.vilmosdev.Webshop.config.CustomJwtException" relationship="CREATE">
+      <point x="-9.094947017729282E-13" y="91.5" />
+      <point x="6774.235" y="872.0" />
+      <point x="6254.774" y="872.0" />
+      <point x="2.1505376025743317E-5" y="-14.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Orders.Payment" target="hu.vilmosdev.Webshop.user.BillingAddress" relationship="TO_ONE">
+      <point x="-113.99997849462397" y="-0.0" />
+      <point x="4432.0" y="2100.0" />
+      <point x="4432.0" y="2361.0" />
+      <point x="4456.649" y="2361.0" />
+      <point x="88.00002150537603" y="-79.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Orders.PaymentService" target="hu.vilmosdev.Webshop.user.BillingAddressRepoistory" relationship="TO_ONE">
+      <point x="15.000021505376026" y="103.5" />
+      <point x="5159.274" y="455.0" />
+      <point x="5129.274" y="455.0" />
+      <point x="-14.999978494623974" y="-14.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Item.Category.CategoryService" target="hu.vilmosdev.Webshop.Item.Category.Category" relationship="CREATE">
+      <point x="-2.236559139784731" y="55.5" />
+      <point x="3314.1489784946243" y="513.0" />
+      <point x="2412.5" y="513.0" />
+      <point x="2412.5" y="1362.0" />
+      <point x="-119.5" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.config.SecurityConfiguration" target="hu.vilmosdev.Webshop.config.JwtAuthenticationFilter" relationship="TO_ONE">
+      <point x="-95.0" y="55.5" />
+      <point x="-0.0" y="-67.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.user.User" target="hu.vilmosdev.Webshop.user.Role" relationship="TO_ONE">
+      <point x="-141.5000000000009" y="126.5" />
+      <point x="4247.0" y="1809.5" />
+      <point x="4247.0" y="2100.0" />
+      <point x="47.500021505376026" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.user.UserDetailsResponse" target="hu.vilmosdev.Webshop.user.BillingAddress" relationship="TO_MANY">
+      <point x="2.1505376025743317E-5" y="-103.5" />
+      <point x="4838.649" y="1873.0" />
+      <point x="4432.0" y="1873.0" />
+      <point x="4432.0" y="2361.0" />
+      <point x="4456.649" y="2361.0" />
+      <point x="88.00002150537603" y="-79.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.admin.AdminController" target="hu.vilmosdev.Webshop.Item.VendorService" relationship="TO_ONE">
+      <point x="-101.09900000000061" y="67.5" />
+      <point x="2752.886" y="323.0" />
+      <point x="-138.0" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Item.ItemImage" target="hu.vilmosdev.Webshop.Item.Item" relationship="TO_ONE">
+      <point x="81.00046236559137" y="-0.0" />
+      <point x="4252.0" y="658.0" />
+      <point x="4252.0" y="1221.0" />
+      <point x="4053.636" y="1221.0" />
+      <point x="4.623655909199442E-4" y="175.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.config.JwtAuthenticationFilter" target="hu.vilmosdev.Webshop.token.TokenRepository" relationship="TO_ONE">
+      <point x="2.1505376025743317E-5" y="67.5" />
+      <point x="7048.024" y="514.0" />
+      <point x="6951.0" y="514.0" />
+      <point x="6951.0" y="1009.0" />
+      <point x="-90.49997849462397" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.user.User" target="hu.vilmosdev.Webshop.user.Address" relationship="TO_MANY">
+      <point x="-141.5000000000009" y="15.0" />
+      <point x="4400.0" y="1698.0" />
+      <point x="4400.0" y="2322.0" />
+      <point x="4415.0" y="2322.0" />
+      <point x="4415.0" y="2365.0" />
+      <point x="4245.649" y="2365.0" />
+      <point x="-86.46100000000024" y="-103.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.auth.AuthenticationService" target="hu.vilmosdev.Webshop.user.InvalidUserCredentialsException" relationship="CREATE">
+      <point x="200.0" y="-64.0" />
+      <point x="6435.235000000001" y="259.0" />
+      <point x="-0.0" y="-31.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.user.Address" target="hu.vilmosdev.Webshop.user.User" relationship="TO_ONE">
+      <point x="-71.46100000000024" y="-103.5" />
+      <point x="4260.649" y="2384.0" />
+      <point x="4358.0" y="2384.0" />
+      <point x="4358.0" y="1683.0" />
+      <point x="-141.5000000000009" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Item.Item" target="hu.vilmosdev.Webshop.Item.Category.Category" relationship="TO_ONE">
+      <point x="-106.5" y="-0.0" />
+      <point x="3729.149" y="1009.0" />
+      <point x="3729.149" y="1362.0" />
+      <point x="119.5" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Item.Item" target="hu.vilmosdev.Webshop.Item.ItemImage" relationship="TO_MANY">
+      <point x="-0.0" y="-175.5" />
+      <point x="-0.0" y="55.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.admin.AdminController" target="hu.vilmosdev.Webshop.Item.ImageStorageService" relationship="TO_ONE">
+      <point x="-15.000000000000455" y="67.5" />
+      <point x="2838.985" y="212.0" />
+      <point x="2767.886" y="212.0" />
+      <point x="2767.886" y="658.0" />
+      <point x="-105.99997849462443" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.auth.AuthenticationService" target="hu.vilmosdev.Webshop.config.CustomJwtException" relationship="CREATE">
+      <point x="-44.999978494623974" y="139.5" />
+      <point x="5882.274" y="872.0" />
+      <point x="6254.774" y="872.0" />
+      <point x="2.1505376025743317E-5" y="-14.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.config.LogoutService" target="hu.vilmosdev.Webshop.token.TokenRepository" relationship="TO_ONE">
+      <point x="-9.094947017729282E-13" y="-55.5" />
+      <point x="7298.485" y="514.0" />
+      <point x="6951.0" y="514.0" />
+      <point x="6951.0" y="1009.0" />
+      <point x="-90.49997849462397" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Orders.StripeWebhookController" target="hu.vilmosdev.Webshop.Orders.PaymentRepository" relationship="TO_ONE">
+      <point x="2.1505376025743317E-5" y="67.5" />
+      <point x="4796.274" y="554.5" />
+      <point x="4929.0" y="554.5" />
+      <point x="4929.0" y="658.0" />
+      <point x="100.00002150537603" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.user.UserDetailsResponse" target="hu.vilmosdev.Webshop.user.Address" relationship="TO_MANY">
+      <point x="2.1505376025743317E-5" y="103.5" />
+      <point x="4838.649" y="2322.0" />
+      <point x="4415.0" y="2322.0" />
+      <point x="4415.0" y="2365.0" />
+      <point x="4245.649" y="2365.0" />
+      <point x="-86.46100000000024" y="-103.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.admin.AdminController" target="hu.vilmosdev.Webshop.Item.Category.CategoryService" relationship="TO_ONE">
+      <point x="157.99999999999955" y="-0.0" />
+      <point x="3114.0" y="54.0" />
+      <point x="3114.0" y="323.0" />
+      <point x="-148.99953763440908" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.config.JwtService" target="hu.vilmosdev.Webshop.token.TokenRepository" relationship="TO_ONE">
+      <point x="161.9999999999991" y="-0.0" />
+      <point x="6951.0" y="658.0" />
+      <point x="6951.0" y="1009.0" />
+      <point x="-90.49997849462397" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Item.Item" target="hu.vilmosdev.Webshop.Item.ItemPrice" relationship="TO_ONE">
+      <point x="-14.99953763440908" y="175.5" />
+      <point x="4038.636" y="1202.0" />
+      <point x="4349.136" y="1202.0" />
+      <point x="4.623655913746916E-4" y="-79.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Orders.Payment" target="hu.vilmosdev.Webshop.Item.ItemQuantity" relationship="TO_MANY">
+      <point x="-113.99997849462397" y="15.0" />
+      <point x="4415.0" y="2115.0" />
+      <point x="4415.0" y="2274.0" />
+      <point x="3879.649" y="2274.0" />
+      <point x="2.1505375570995966E-5" y="-55.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Item.ItemService" target="hu.vilmosdev.Webshop.Item.ItemPrice" relationship="CREATE">
+      <point x="158.0" y="-0.0" />
+      <point x="4364.136" y="323.0" />
+      <point x="15.000462365591375" y="-79.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Orders.PaymentService" target="hu.vilmosdev.Webshop.Orders.PaymentRepository" relationship="TO_ONE">
+      <point x="-180.99997849462397" y="90.5" />
+      <point x="4929.0" y="413.5" />
+      <point x="4929.0" y="658.0" />
+      <point x="100.00002150537603" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.token.Token" target="hu.vilmosdev.Webshop.user.User" relationship="TO_ONE">
+      <point x="2.1505376025743317E-5" y="91.5" />
+      <point x="5101.149" y="2346.0" />
+      <point x="4358.0" y="2346.0" />
+      <point x="4358.0" y="1683.0" />
+      <point x="-141.5000000000009" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.auth.AuthenticationResponse" target="hu.vilmosdev.Webshop.user.Role" relationship="TO_ONE">
+      <point x="2.1505376025743317E-5" y="103.5" />
+      <point x="4148.149" y="1858.0" />
+      <point x="4247.0" y="1858.0" />
+      <point x="4247.0" y="2100.0" />
+      <point x="47.500021505376026" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Item.VendorService" target="hu.vilmosdev.Webshop.Item.VendorRepository" relationship="TO_ONE">
+      <point x="4.623655909199442E-4" y="43.5" />
+      <point x="2923.386" y="528.0" />
+      <point x="3227.149" y="528.0" />
+      <point x="2.1505375570995966E-5" y="-14.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Orders.Payment" target="hu.vilmosdev.Webshop.user.User" relationship="TO_ONE">
+      <point x="2.1505376025743317E-5" y="199.5" />
+      <point x="4563.149" y="2346.0" />
+      <point x="4358.0" y="2346.0" />
+      <point x="4358.0" y="1683.0" />
+      <point x="-141.5000000000009" y="-0.0" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Orders.PaymentController" target="hu.vilmosdev.Webshop.Orders.PaymentService" relationship="TO_ONE">
+      <point x="-0.0" y="31.5" />
+      <point x="-0.0" y="-103.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.user.User" target="hu.vilmosdev.Webshop.Orders.Payment" relationship="TO_MANY">
+      <point x="14.99999999999909" y="163.5" />
+      <point x="59.711021505375356" y="-199.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.user.User" target="hu.vilmosdev.Webshop.token.Token" relationship="TO_MANY">
+      <point x="141.4999999999991" y="-0.0" />
+      <point x="5218.649" y="1683.0" />
+      <point x="5218.649" y="2262.0" />
+      <point x="5086.149" y="2262.0" />
+      <point x="-14.999978494623974" y="91.5" />
+    </edge>
+    <edge source="hu.vilmosdev.Webshop.Orders.ReducedPaymentResponse" target="hu.vilmosdev.Webshop.user.BillingAddress" relationship="TO_ONE">
+      <point x="2.1505375570995966E-5" y="-127.5" />
+      <point x="3950.149" y="1873.0" />
+      <point x="4432.0" y="1873.0" />
+      <point x="4432.0" y="2361.0" />
+      <point x="4456.649" y="2361.0" />
+      <point x="88.00002150537603" y="-79.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.1773689052437903" showDependencies="true" x="5126.138809647306" y="1351.8691649377606" />
+  <SelectedNodes>
+    <node>hu.vilmosdev.Webshop.Item.ItemRepository</node>
+    <node>hu.vilmosdev.Webshop.auth.AuthenticationResponse</node>
+    <node>hu.vilmosdev.Webshop.auth.RegisterRequest</node>
+    <node>hu.vilmosdev.Webshop.config.JwtAuthenticationFilter</node>
+    <node>hu.vilmosdev.Webshop.user.BillingAddress</node>
+    <node>hu.vilmosdev.Webshop.config.GlobalExceptionHandler</node>
+    <node>hu.vilmosdev.Webshop.Item.Category.CategoryService</node>
+    <node>hu.vilmosdev.Webshop.config.ApplicationConfig</node>
+    <node>hu.vilmosdev.Webshop.user.User</node>
+    <node>hu.vilmosdev.Webshop.config.CustomJwtException</node>
+    <node>hu.vilmosdev.Webshop.user.AddressRepository</node>
+    <node>hu.vilmosdev.Webshop.Item.Reviews.ItemReviewService</node>
+    <node>hu.vilmosdev.Webshop.user.UserDetailsResponse</node>
+    <node>hu.vilmosdev.Webshop.auth.AuthenticationRequest</node>
+    <node>hu.vilmosdev.Webshop.Item.Vendor</node>
+    <node>hu.vilmosdev.Webshop.Item.ImageStorageService</node>
+    <node>hu.vilmosdev.Webshop.WebshopApplication</node>
+    <node>hu.vilmosdev.Webshop.Item.ItemImage</node>
+    <node>hu.vilmosdev.Webshop.Orders.PaymentController</node>
+    <node>hu.vilmosdev.Webshop.user.BillingAddressResponse</node>
+    <node>hu.vilmosdev.Webshop.Item.Category.CategoryWithoutParent</node>
+    <node>hu.vilmosdev.Webshop.Item.ReducedItemResponse</node>
+    <node>hu.vilmosdev.Webshop.Orders.PaymentIntentResponse</node>
+    <node>hu.vilmosdev.Webshop.config.SecurityConfiguration</node>
+    <node>hu.vilmosdev.Webshop.Item.ItemController</node>
+    <node>hu.vilmosdev.Webshop.user.BillingAddressRepoistory</node>
+    <node>hu.vilmosdev.Webshop.Item.ItemResponse</node>
+    <node>hu.vilmosdev.Webshop.Item.VendorService</node>
+    <node>hu.vilmosdev.Webshop.admin.AdminController</node>
+    <node>hu.vilmosdev.Webshop.config.CorsConfiguration</node>
+    <node>hu.vilmosdev.Webshop.Item.Category.CategoryController</node>
+    <node>hu.vilmosdev.Webshop.Item.ItemQuantity</node>
+    <node>hu.vilmosdev.Webshop.token.TokenRepository</node>
+    <node>hu.vilmosdev.Webshop.Item.Reviews.ItemReview</node>
+    <node>hu.vilmosdev.Webshop.user.Address</node>
+    <node>hu.vilmosdev.Webshop.Item.Category.CategoryRepository</node>
+    <node>hu.vilmosdev.Webshop.token.RefreshToken</node>
+    <node>hu.vilmosdev.Webshop.token.RefreshTokenRepository</node>
+    <node>hu.vilmosdev.Webshop.user.UserRepository</node>
+    <node>hu.vilmosdev.Webshop.user.UserController</node>
+    <node>hu.vilmosdev.Webshop.Orders.StripeWebhookController</node>
+    <node>hu.vilmosdev.Webshop.config.LogoutService</node>
+    <node>hu.vilmosdev.Webshop.Item.Category.Category</node>
+    <node>hu.vilmosdev.Webshop.Item.VendorRepository</node>
+    <node>hu.vilmosdev.Webshop.user.Role</node>
+    <node>hu.vilmosdev.Webshop.Orders.ChargeRequest</node>
+    <node>hu.vilmosdev.Webshop.Item.Item</node>
+    <node>hu.vilmosdev.Webshop.Item.ItemCreationRequest</node>
+    <node>hu.vilmosdev.Webshop.Orders.PaymentRepository</node>
+    <node>hu.vilmosdev.Webshop.Item.Category.CategoryCreationRequest</node>
+    <node>hu.vilmosdev.Webshop.Orders.PaymentStatus</node>
+    <node>hu.vilmosdev.Webshop.user.InvalidUserCredentialsException</node>
+    <node>hu.vilmosdev.Webshop.Item.Reviews.ItemReviewController</node>
+    <node>hu.vilmosdev.Webshop.Item.ItemImageRepository</node>
+    <node>hu.vilmosdev.Webshop.token.Token</node>
+    <node>hu.vilmosdev.Webshop.auth.AuthenticationService</node>
+    <node>hu.vilmosdev.Webshop.Orders.ReducedPaymentResponse</node>
+    <node>hu.vilmosdev.Webshop.Item.Reviews.ItemReviewRepository</node>
+    <node>hu.vilmosdev.Webshop.Item.ItemPrice</node>
+    <node>hu.vilmosdev.Webshop.config.JwtService</node>
+    <node>hu.vilmosdev.Webshop.Orders.Payment</node>
+    <node>hu.vilmosdev.Webshop.Item.ItemService</node>
+    <node>hu.vilmosdev.Webshop.user.UserService</node>
+    <node>hu.vilmosdev.Webshop.Orders.PaymentService</node>
+    <node>hu.vilmosdev.Webshop.auth.AuthenticationController</node>
+    <node>hu.vilmosdev.Webshop.user.BillingAddressRequest</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
