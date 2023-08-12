@@ -5,7 +5,7 @@ A fully functional Spring Boot API designed for a webshop application. The API s
 
 ### API Documentation
 
-Detailed API endpoint documentation can be found in the Wiki.
+**<u>Detailed API endpoint documentation can be found in the Wiki.</u>**
 
 ### Features
 * **Authentication:** Utilizes access and refresh tokens to ensure the security of the API. Every single request goes through a OncePerRequestFilter checking the validity and expiration of the tokens.
@@ -66,8 +66,8 @@ jwt:
   refresh_expiration: 31536000000
 angular_link: http://localhost:4200
 ```
-
-Try postman or the frontend application below to access the app that is now hosted on localhost:8080
+You need to build the application or just run it in an IDE.
+Try postman or the frontend application below to access the app that is now hosted on http://localhost:8080
 
 ## Angular frontend
 This is the Angular frontend designed to communicate with the API above. This project is still very much in progress, but it provides a functional shopping experience.
