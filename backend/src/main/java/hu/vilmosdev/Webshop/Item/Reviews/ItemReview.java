@@ -1,5 +1,6 @@
 package hu.vilmosdev.Webshop.Item.Reviews;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import hu.vilmosdev.Webshop.Item.Item;
 import hu.vilmosdev.Webshop.user.User;
 import jakarta.persistence.*;
@@ -25,9 +26,11 @@ public class ItemReview {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
+  @JsonIgnore
   private User user;
 
   @ManyToOne
   @JoinColumn(name = "item_id")
+  @JsonIgnore
   private Item item;
 }

@@ -1,5 +1,6 @@
 package hu.vilmosdev.Webshop.user;
 
+import hu.vilmosdev.Webshop.Orders.Payment;
 import jakarta.persistence.OneToMany;
 import lombok.Builder;
 import lombok.Data;
@@ -14,8 +15,7 @@ public class UserDetailsResponse {
   private String lastname;
   private String email;
   private String role;
-  @OneToMany(mappedBy = "user")
   private List<Address> addresses;
-  @OneToMany(mappedBy = "user")
   private List<BillingAddress> billingAddresses;
+  private List<Payment> payments;
 }

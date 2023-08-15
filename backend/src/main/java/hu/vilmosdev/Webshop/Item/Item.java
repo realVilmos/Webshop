@@ -47,12 +47,20 @@ public class Item {
   @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
   private List<ItemPrice> itemPrices;
 
-  void addImage(ItemImage itemImage){
+  public void addImage(ItemImage itemImage){
     if(this.images == null){
       this.images = new ArrayList<>();
     }
     this.images.add(itemImage);
     itemImage.setItem(this);
+  }
+
+  public void addReview(ItemReview itemReview){
+    if(this.reviews == null){
+      this.reviews = new ArrayList<>();
+    }
+    this.reviews.add(itemReview);
+    itemReview.setItem(this);
   }
 
   public ItemPrice getLatestPrice(){

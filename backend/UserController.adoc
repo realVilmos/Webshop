@@ -1,0 +1,91 @@
+== Getting most user details
+
+You can make a request to get-details endpoint to get most of the user data that is in the database like all the addresses, billing addresses, payments.
+
+include::target/generated-snippets/User/getting-userDetails/http-request.adoc[]
+include::target/generated-snippets/User/getting-userDetails/http-response.adoc[]
+
+== Shipping addresses
+
+=== Posting the shipping address
+
+**Note that creating a billing address automatically creates a shipping address**
+
+Request:
+include::target/generated-snippets/User/posting-shipping-address/http-request.adoc[]
+
+Required fields:
+
+|===
+|Path|Type
+
+|`+county+`
+|`+String+`
+
+|`+postalCode+`
+|`+Number+`
+
+|`+Street+`
+|`+String+`
+
+|`+Phone number+`
+|`+String+`
+
+|===
+
+Response:
+include::target/generated-snippets/User/posting-shipping-address/http-response.adoc[]
+
+=== Getting the shipping addresses
+
+Request:
+
+include::target/generated-snippets/User/getting-shipping-address/http-request.adoc[]
+
+Response: All the shipping addresses associated with the user
+include::target/generated-snippets/User/getting-shipping-address/http-response.adoc[]
+
+== Posting the billing addresses
+
+You need the following fields to create a billing address:
+
+|===
+|Path|Type
+
+|`+county+`
+|`+String+`
+
+|`+postalCode+`
+|`+Number+`
+
+|`+Street+`
+|`+String+`
+
+|`+Phone number+`
+|`+String+`
+
+|`+Company name+`
+|`+String+`
+
+|`+Tax number+`
+|`+String+`
+
+|===
+
+Request:
+
+include::target/generated-snippets/User/posting-billing-address/http-request.adoc[]
+
+Response:
+
+include::target/generated-snippets/User/posting-billing-address/http-response.adoc[]
+
+== Getting billing addresses
+
+Request:
+
+include::target/generated-snippets/User/getting-billing-address/http-request.adoc[]
+
+Response: All the billing addresses associated with the user
+
+include::target/generated-snippets/User/getting-billing-address/http-response.adoc[]

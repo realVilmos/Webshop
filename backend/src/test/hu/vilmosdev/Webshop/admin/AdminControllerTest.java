@@ -117,7 +117,6 @@ public class AdminControllerTest {
     mockMvc.perform(requestBuilder)
       .andExpect(status().isForbidden())
       .andDo(document("Admin/Non-admin user trying to create a vendor"));
-
   }
 
   @Test

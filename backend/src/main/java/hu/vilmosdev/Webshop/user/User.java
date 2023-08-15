@@ -11,6 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class User implements UserDetails {
   private Long id;
   private String firstname;
   private String lastname;
+  @Column(unique = true)
   private String email;
   private String password;
 
@@ -95,5 +97,13 @@ public class User implements UserDetails {
       ", password='" + password + '\'' +
       ", role=" + role +
       '}';
+  }
+
+  public void addBillingAddress(BillingAddress billingAddress){
+    if(this.billingAddresses == null){
+      this.billingAddresses = new ArrayList<>();
+    }
+    billingAddress.setUser(this);
+    this.billingAddresses.add(billingAddress);
   }
 }

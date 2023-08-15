@@ -1,5 +1,6 @@
 package hu.vilmosdev.Webshop.Item;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +18,7 @@ public class ItemQuantity {
   private Long id;
 
   @ManyToOne
+  @JsonIgnore
   private Item item;
 
   private Integer quantity;

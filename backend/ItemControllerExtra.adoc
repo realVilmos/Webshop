@@ -1,0 +1,26 @@
+== Categories
+
+You can get all the categories by requesting main-categories:
+include::target/generated-snippets/Category/main-categories/http-request.adoc[]
+include::target/generated-snippets/Category/main-categories/http-response.adoc[]
+
+You can also get a either category by id and their subcategories:
+include::target/generated-snippets/Category/gettingACategory/http-request.adoc[]
+include::target/generated-snippets/Category/gettingACategory/http-response.adoc[]
+
+If a category doesn't exist, you will get a 404:
+include::target/generated-snippets/Category/gettingACategoryNotFound/http-response.adoc[]
+
+== Reviews
+
+Users to write a review, they have to be authenticated or else they will get 401 status error
+
+Request:
+include::target/generated-snippets/Review/User_writing_review/http-request.adoc[]
+Response:
+include::target/generated-snippets/Review/User_writing_review/http-response.adoc[]
+
+Here is how you can get a pagable of item reviews:
+include::target/generated-snippets/Review/getting_reviewsOfItem_Pageable/http-request.adoc[]
+Response:
+include::target/generated-snippets/Review/getting_reviewsOfItem_Pageable/http-response.adoc[]

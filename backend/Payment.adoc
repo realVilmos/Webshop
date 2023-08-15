@@ -1,0 +1,46 @@
+== Creating payments
+
+Creating payments is done via Charge Requests:
+
+Required fields for request:
+|===
+|Path|Type|Description
+
+|`+itemQuantities+`
+|`+Map<Long, Integer>+`
+|Keys are the Item ids, and values are the quantities of the given item.
+
+|`+billingAddressId+`
+|`+Number+`
+|Id of the chosen billing address
+
+|`+shippingAddressId+`
+|`+Number+`
+|Id of the chosen shopping address
+
+|===
+
+Request:
+include::target/generated-snippets/Payment/creating-payment-intent/http-request.adoc[]
+
+Response:
+include::target/generated-snippets/Payment/creating-payment-intent/http-response.adoc[]
+
+With the client secret and a Stripe library, the purchase can be finalized. After the finalization, Stripe sends the response to both the frontend via a response and to a webhook here. You need to set up the webhook to /api/payment/stripe-webhooks in order to update the status of the payments.
+
+== Getting the payment reference
+There are three states a payment can have:
+
+* PENDING
+* SUCCESS
+* FAIL
+
+Initially it is PENDING, and when the webhook is called, it is updated accordingly.
+Here is how you can get an example payment reference. The PaymentIntent's id is used for this.
+
+The user must be authenticated to access their payment references.
+include::target/generated-snippets/Payment/getting-payment-reference/http-request.adoc[]
+
+Response:
+include::target/generated-snippets/Payment/getting-payment-reference/http-response.adoc[]
+

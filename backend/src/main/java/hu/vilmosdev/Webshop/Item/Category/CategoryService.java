@@ -1,6 +1,7 @@
 package hu.vilmosdev.Webshop.Item.Category;
 
 
+import hu.vilmosdev.Webshop.Item.NotFoundException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -44,9 +46,11 @@ public class CategoryService {
 
   @Transactional
   public Category findById(Long id) {
-    try{
+    try {
       Category category = categoryRepository.findById(id).get();
       return category;
+    }catch(NoSuchElementException e){
+      throw new NotFoundException(e.getMessage());
     }catch (Exception e) {
       logger.error("Error finding the Category: " + e.getMessage());
       e.printStackTrace();

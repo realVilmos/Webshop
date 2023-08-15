@@ -22,5 +22,6 @@ public class ReducedPaymentResponse {
   private LocalDateTime createdDate;
   private double totalPrice;
   private String currency;
+  private String status;
 
 }

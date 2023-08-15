@@ -16,7 +16,7 @@ public class BillingAddress {
   @Id
   @GeneratedValue
   private Long id;
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "address_id")
   private Address address;
 

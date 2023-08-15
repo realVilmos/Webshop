@@ -6,9 +6,7 @@ import hu.vilmosdev.Webshop.Item.*;
 import hu.vilmosdev.Webshop.Item.Category.Category;
 import hu.vilmosdev.Webshop.Item.Category.CategoryRepository;
 import hu.vilmosdev.Webshop.Item.Reviews.ItemReview;
-import hu.vilmosdev.Webshop.user.Role;
-import hu.vilmosdev.Webshop.user.User;
-import hu.vilmosdev.Webshop.user.UserRepository;
+import hu.vilmosdev.Webshop.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -76,6 +74,22 @@ public class WebshopApplication {
         .password(passwordEncoder.encode("32w987ue"))
         .build();
 
+      BillingAddress billingAddress = BillingAddress.builder()
+        .address(
+          Address.builder()
+            .city("Pécs")
+            .county("Baranya")
+            .postalCode(9999)
+            .phoneNumber("+12345678910")
+            .street("Szép utca 12/A")
+            .user(user)
+            .build()
+        )
+        .taxNumber("12345678910")
+        .companyName("Vilmosdev ltd")
+        .build();
+
+      user.addBillingAddress(billingAddress);
       user = userRepository.save(user);
 
       Item item = Item.builder()

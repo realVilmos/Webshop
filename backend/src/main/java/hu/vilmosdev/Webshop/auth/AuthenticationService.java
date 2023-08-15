@@ -84,20 +84,7 @@ public class AuthenticationService {
     try {
       authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
       User savedUser = repository.findByEmail(request.getEmail()).orElseThrow();
-      var jwtAccessToken = jwtService.generateToken(savedUser);
-      var jwtRefreshToken = jwtService.generateRefreshToken(savedUser);
-
-      saveTokens(savedUser, jwtAccessToken, jwtRefreshToken);
-
-      return AuthenticationResponse.builder()
-        .accessToken(jwtAccessToken)
-        .refreshToken(jwtRefreshToken)
-        .firstName(savedUser.getFirstname())
-        .lastName(savedUser.getLastname())
-        .email(savedUser.getEmail())
-        .role(savedUser.getRole())
-        .userId(savedUser.getId())
-        .build();
+      return getAuthenticationResponse(savedUser);
     }catch(AuthenticationException e){
       logger.error("Invalid user credentials: " + e.getMessage());
       e.printStackTrace();
@@ -108,6 +95,23 @@ public class AuthenticationService {
       e.printStackTrace();
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during authentication: ", e);
     }
+  }
+
+  private AuthenticationResponse getAuthenticationResponse(User savedUser) {
+    var jwtAccessToken = jwtService.generateToken(savedUser);
+    var jwtRefreshToken = jwtService.generateRefreshToken(savedUser);
+
+    saveTokens(savedUser, jwtAccessToken, jwtRefreshToken);
+
+    return AuthenticationResponse.builder()
+      .accessToken(jwtAccessToken)
+      .refreshToken(jwtRefreshToken)
+      .firstName(savedUser.getFirstname())
+      .lastName(savedUser.getLastname())
+      .email(savedUser.getEmail())
+      .role(savedUser.getRole())
+      .userId(savedUser.getId())
+      .build();
   }
 
   private Token buildAccessToken(User user, String jwtToken) {
@@ -215,20 +219,7 @@ public class AuthenticationService {
           //Invalidálni kell a beérkező refresh tokent és a hozzá tartozó Tokent
           revokeRefreshAndRelatedAccessToken(refreshToken);
 
-          var jwtAccessToken = jwtService.generateToken(user);
-          var jwtRefreshToken = jwtService.generateRefreshToken(user);
-
-          saveTokens(user, jwtAccessToken, jwtRefreshToken);
-
-          return AuthenticationResponse.builder()
-            .accessToken(jwtAccessToken)
-            .refreshToken(jwtRefreshToken)
-            .firstName(user.getFirstname())
-            .lastName(user.getLastname())
-            .email(user.getEmail())
-            .role(user.getRole())
-            .userId(user.getId())
-            .build();
+          return getAuthenticationResponse(user);
         }else{
           throw new CustomJwtException("Expired or Revoked token");
         }

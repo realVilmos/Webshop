@@ -130,6 +130,7 @@ public class UserService {
           .addresses(user.getAddresses())
           .lastname(user.getLastname())
           .firstname(user.getFirstname())
+          .payments(user.getPayments())
           .build();
 
         return ResponseEntity.ok(response);
